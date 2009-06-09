@@ -8,14 +8,17 @@
 	<? wp_head(); ?>
 	<script type='text/javascript'>
 		$(document).ready(function(){
-		
+			
 		});	
 	</script>
 </head>
+
 <body>
+
 <div id="wrap">
+
 <div id="body">
 	<div id="header">
 		<h1>NO AL POLIDUCTO TOCANCIPA - MANCILLA</h1>
-		<h2>Facatativá, El Rosal, Subachoque, Tabio, Cajicá, Zipaquirá y Tocancipá. Se verán afectados. </h2>	
+		<!-- <h2>Facatativá, El Rosal, Subachoque, Tabio, Cajicá, Zipaquirá y Tocancipá. Se verán afectados. </h2> -->	
 	</div>

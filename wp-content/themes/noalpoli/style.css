@@ -9,10 +9,42 @@ Author URI: http://noalpoliducto.org/
 
 /* NOTAS
 
-letra: Dirty Headline / 50 entreletra
-inactivo:FFFFFF/8CC63F
-activo:BAE576/8CC63F
-seleccionado:8CC63F/8CC63F
+Dirty Headline / 18 pt / negra/  50 entreletra
+inactivo:BAE576/486D01
+activo:BAE576/86B700
+clikiado:486D01/486D01
+seleccionado:FFFFFF/486D01
+
+titulo:
+font-family: "palatino linotype",palatino,serif;
+color: #486D01;
+font-size: 19px;
+font-weight: bold;
+
+subtitulo:
+font-family: "palatino linotype",palatino,serif;
+color: #699900;
+font-size: 16px;
+font-weight: bold;
+
+"dicho por" o "conozca mas" inactivo:
+font-family: "palatino linotype",palatino,serif;
+color: #699900;
+font-size: 12px;
+
+"dicho por" o "conozca mas"activo:
+font-family: "palatino linotype",palatino,serif;
+color: #486D01;
+font-size: 12px;
+
+"dicho por" o "conozca mas" ya visto:
+font-family: "palatino linotype",palatino,serif;
+color: #666666;
+font-size: 12px;
+
+contenido:
+font-family: "lucida sans unicode","lucida grande",sans-serif;
+font-size: 12px;
 
 */
 
@@ -24,10 +56,62 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 body {
 	text-align:center;
+	font-family: "palatino linotype",palatino,serif;
+}
+
+
+
+p , h1 , h2 , h3 , h4 , h5 , h6 {
+	margin-bottom:1em;
+}
+
+p {
+	font-family: "lucida sans unicode","lucida grande",sans-serif;
+	font-size: 12px;
+}
+
+h3 {
+	color: #486D01;
+	font-size: 19px;
+	font-weight: bold;
+	margin-left:-30px;
+}
+
+h4 {
+	color: #699900;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 div#wrap {
 	text-align:left;
 	margin:20px auto;
-	width:900px;
+	width:1024px;
+	background-image:url('img/sombra.png');
+	background-repeat:repeat-y;
+}
+
+div#header h1 {
+	height:190px;
+	display:block;
+	overflow:hidden;
+	background-image:url('img/headernoalpolioducto.png');
+	background-repeat:no-repeat;
+	text-indent:-8000px
+}
+
+	div#header h2 {
+		margin-left:40px;
+	}
+
+div#contenidos {
+	padding:10px 20px 10px 100px;
+	width:625px;
+}
+
+div#footer {
+	height:50px;
+	background-image:url('img/pie.png');
+	background-repeat:no-repeat;
+	background-position:bottom;
 }
