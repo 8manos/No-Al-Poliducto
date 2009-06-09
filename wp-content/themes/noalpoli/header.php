@@ -14,11 +14,13 @@
 </head>
 
 <body>
-
+<div class="Alertanotice">
+	Este sitio se encuentra en su etapa inicial de desarrollo, existen aún muchas cosas por finalizar, puedes seguir visitandolo para ver como avanza. Planeamos tenerlo listo finalizando esta semana. Gracias por el interes.
+</div>
 <div id="wrap">
 
 <div id="body">
 	<div id="header">
-		<h1>NO AL POLIDUCTO TOCANCIPA - MANCILLA</h1>
-		<!-- <h2>Facatativá, El Rosal, Subachoque, Tabio, Cajicá, Zipaquirá y Tocancipá. Se verán afectados. </h2> -->	
+		<h1><? bloginfo('title'); ?></h1>
+		<!-- <h2><? bloginfo('description'); ?></h2> -->	
 	</div>

@@ -83,12 +83,28 @@ h4 {
 	font-weight: bold;
 }
 
+.Alertanotice{
+background-color:#EFA9AD;
+border:1px solid #E20A17;
+font-size:12px;
+margin:0 0 10px 0;
+padding:10px;
+text-align:center;
+}
+
 div#wrap {
 	text-align:left;
 	margin:20px auto;
-	width:1024px;
-	background-image:url('img/sombra.png');
+	width:1000px;
+	background-image:url('img/borde_lados.png');
 	background-repeat:repeat-y;
+}
+
+div#header {
+	background-image:url('img/borde_arriba.png');
+	background-repeat:no-repeat;
+	background-position:top;
+	padding-top:15px;
 }
 
 div#header h1 {
@@ -97,7 +113,8 @@ div#header h1 {
 	overflow:hidden;
 	background-image:url('img/headernoalpolioducto.png');
 	background-repeat:no-repeat;
-	text-indent:-8000px
+	text-indent:-8000px;
+	margin-left:20px;
 }
 
 	div#header h2 {
@@ -111,7 +128,7 @@ div#contenidos {
 
 div#footer {
 	height:50px;
-	background-image:url('img/pie.png');
+	background-image:url('img/borde_abajo.png');
 	background-repeat:no-repeat;
 	background-position:bottom;
 }
