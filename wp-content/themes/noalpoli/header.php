@@ -5,6 +5,9 @@
 	<title><? bloginfo('name'); ?><? wp_title(' | '); ?></title>
 	<link rel="stylesheet" type="text/css" href="<? bloginfo('stylesheet_url'); ?>" media="screen" />
 	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery-1.3.2.min.js'></script>
+	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo-1.4.2-min.js'></script>
+	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/scroll.js'></script>
+	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.jplayer.js'></script>
 	<? if ( is_single() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
 	<script type='text/javascript'>
 	    var name = "#sidebarDiv";
@@ -16,6 +19,56 @@
 		    var offset = menuYloc+$(document).scrollTop()+"px";
 		    $(name).animate({top:offset},{duration:800,queue:false});
 		});
+
+		highlight_active_sidebar_links();
+
+		function highlight_active_sidebar_links() {
+		    $("li a").each(function(){
+			var href = this.getAttribute('href',2);
+
+			var location = new String( document.location );
+			location = location.substr(0, href.length );
+
+			if ( location == href) {
+			    //$(this).addClass("activo");
+			}
+		    });
+		}
+
+		$('#sidebar').localScroll();
+
+		<? if(is_single() && in_category('audio')) { ?>
+		$("#jpId").jPlayer( {swfPath: "/js" , ready: function () {$("#jpId").setFile("http://noalpoliducto.org/wp-content/uploads/2009/06/reunioninformativapoliductojunio062009-alcalde.mp3").play();},cssPrefix: "my_jp_class"} );
+		<? } ?>
+ <?php
+ 	$audios = new WP_Query('showposts=150&cat=3');
+ 	while ($audios->have_posts()) : $audios->the_post();
+	$trash = $post->post_content;
+ ?>
+   		 $("#mp3-<? the_ID(); ?>").jPlayer( {swfPath: "/js" , ready: function () {$("#mp3-<? the_ID(); ?>").setFile("<? extractMp3(); ?>");},cssPrefix: "my_jp_class"} );
+	$("#mp3-<? the_ID(); ?>").jPlayerId("play", "player_play-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("pause", "player_pause-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("stop", "player_stop-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("loadBar", "player_progress_load_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("playBar", "player_progress_play_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeMin", "player_volume_min-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeMax", "player_volume_max-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBar", "player_volume_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBarValue", "player_volume_bar_value-<? the_ID(); ?>");
+
+	$("#mp3-<? the_ID(); ?>").onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+		var myPlayedTime = new Date(playedTime);
+		var ptMin = (myPlayedTime.getMinutes() < 10) ? "0" + myPlayedTime.getMinutes() : myPlayedTime.getMinutes();
+		var ptSec = (myPlayedTime.getSeconds() < 10) ? "0" + myPlayedTime.getSeconds() : myPlayedTime.getSeconds();
+		$("#play_time-<? the_ID(); ?>").text(ptMin+":"+ptSec);
+
+		var myTotalTime = new Date(totalTime);
+		var ttMin = (myTotalTime.getMinutes() < 10) ? "0" + myTotalTime.getMinutes() : myTotalTime.getMinutes();
+		var ttSec = (myTotalTime.getSeconds() < 10) ? "0" + myTotalTime.getSeconds() : myTotalTime.getSeconds();
+		$("#total_time-<? the_ID(); ?>").text(ttMin+":"+ttSec);
+	});
+
+ <?php endwhile; ?>
 	    }); 
 	</script>
 </head>
