@@ -26,7 +26,7 @@
 	</div>
 
 	<ol class="commentlist">
-	<?php wp_list_comments(); ?>
+	<?php wp_list_comments('callback=mytheme_comment'); ?>
 	</ol>
 
 	<div class="navigation">

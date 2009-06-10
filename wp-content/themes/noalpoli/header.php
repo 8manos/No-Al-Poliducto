@@ -2,14 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"  dir="ltr" lang="es-CO">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><? wp_title(' | '); ?><? bloginfo('name'); ?></title>
+	<title><? bloginfo('name'); ?><? wp_title(' | '); ?></title>
 	<link rel="stylesheet" type="text/css" href="<? bloginfo('stylesheet_url'); ?>" media="screen" />
 	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery-1.3.2.min.js'></script>
-	<? wp_head(); ?>
+	<? if ( is_single() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
 	<script type='text/javascript'>
-		$(document).ready(function(){
-			
-		});	
+	    var name = "#sidebarDiv";
+	    var menuYloc = null;
+	
+	    $(document).ready(function(){
+		menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px")))
+		$(window).scroll(function () { 
+		    var offset = menuYloc+$(document).scrollTop()+"px";
+		    $(name).animate({top:offset},{duration:800,queue:false});
+		});
+	    }); 
 	</script>
 </head>
 
@@ -21,6 +28,6 @@
 
 <div id="body">
 	<div id="header">
-		<h1><? bloginfo('title'); ?></h1>
+		<h1><a href="/"><? bloginfo('title'); ?></a></h1>
 		<!-- <h2><? bloginfo('description'); ?></h2> -->	
 	</div>
