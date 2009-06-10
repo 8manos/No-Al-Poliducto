@@ -41,6 +41,7 @@
 		$("#jpId").jPlayer( {swfPath: "/js" , ready: function () {$("#jpId").setFile("http://noalpoliducto.org/wp-content/uploads/2009/06/reunioninformativapoliductojunio062009-alcalde.mp3").play();},cssPrefix: "my_jp_class"} );
 		<? } ?>
  <?php
+if(in_category('audio')||is_category('documentacion')){ 
  	$audios = new WP_Query('showposts=150&cat=3');
  	while ($audios->have_posts()) : $audios->the_post();
 	$trash = $post->post_content;
@@ -68,7 +69,7 @@
 		$("#total_time-<? the_ID(); ?>").text(ttMin+":"+ttSec);
 	});
 
- <?php endwhile; ?>
+ <?php endwhile; } ?>
 	    }); 
 	</script>
 </head>

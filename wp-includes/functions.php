@@ -2578,11 +2578,11 @@ function dead_db() {
 <html xmlns="http://www.w3.org/1999/xhtml" <?php if ( function_exists( 'language_attributes' ) ) language_attributes(); ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Database Error</title>
+	<title>Error de la base de datos</title>
 
 </head>
 <body>
-	<h1>Error establishing a database connection</h1>
+	<h1>Error al intentar establecer una conexi&oacute;n con la base de datos.</h1>
 </body>
 </html>
 <?php

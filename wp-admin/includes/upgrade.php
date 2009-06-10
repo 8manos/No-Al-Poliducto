@@ -1120,7 +1120,7 @@ function dbDelta($queries, $execute = true) {
 	foreach($queries as $qry) {
 		if(preg_match("|CREATE TABLE ([^ ]*)|", $qry, $matches)) {
 			$cqueries[strtolower($matches[1])] = $qry;
-			$for_update[$matches[1]] = 'Created table '.$matches[1];
+			$for_update[$matches[1]] = 'Se ha creado la tabla '.$matches[1];
 		}
 		else if(preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
 			array_unshift($cqueries, $qry);
@@ -1197,7 +1197,7 @@ function dbDelta($queries, $execute = true) {
 						if($tablefield->Type != $fieldtype) {
 							// Add a query to change the column type
 							$cqueries[] = "ALTER TABLE {$table} CHANGE COLUMN {$tablefield->Field} " . $cfields[strtolower($tablefield->Field)];
-							$for_update[$table.'.'.$tablefield->Field] = "Changed type of {$table}.{$tablefield->Field} from {$tablefield->Type} to {$fieldtype}";
+							$for_update[$table.'.'.$tablefield->Field] = "Se ha cambiado el tipo de {$table}.{$tablefield->Field} de {$tablefield->Type} a {$fieldtype}";
 						}
 
 						// Get the default value from the array
@@ -1208,7 +1208,7 @@ function dbDelta($queries, $execute = true) {
 							{
 								// Add a query to change the column's default value
 								$cqueries[] = "ALTER TABLE {$table} ALTER COLUMN {$tablefield->Field} SET DEFAULT '{$default_value}'";
-								$for_update[$table.'.'.$tablefield->Field] = "Changed default value of {$table}.{$tablefield->Field} from {$tablefield->Default} to {$default_value}";
+								$for_update[$table.'.'.$tablefield->Field] = "Se ha cambiado el valor por omisión de {$table}.{$tablefield->Field} de {$tablefield->Default} a {$default_value}";
 							}
 						}
 
@@ -1224,7 +1224,7 @@ function dbDelta($queries, $execute = true) {
 				foreach($cfields as $fieldname => $fielddef) {
 					// Push a query line into $cqueries that adds the field to that table
 					$cqueries[] = "ALTER TABLE {$table} ADD COLUMN $fielddef";
-					$for_update[$table.'.'.$fieldname] = 'Added column '.$table.'.'.$fieldname;
+					$for_update[$table.'.'.$fieldname] = 'Se ha añadido la columna '.$table.'.'.$fieldname;
 				}
 
 				// Index stuff goes here
@@ -1281,7 +1281,7 @@ function dbDelta($queries, $execute = true) {
 				foreach ( (array) $indices as $index ) {
 					// Push a query line into $cqueries that adds the index to that table
 					$cqueries[] = "ALTER TABLE {$table} ADD $index";
-					$for_update[$table.'.'.$fieldname] = 'Added index '.$table.' '.$index;
+					$for_update[$table.'.'.$fieldname] = 'Se ha añadido el índice '.$table.' '.$index;
 				}
 
 				// Remove the original table creation query from processing
@@ -1398,7 +1398,7 @@ function make_site_theme_from_oldschool($theme_name, $template) {
 	}
 
 	// Add a theme header.
-	$header = "/*\nTheme Name: $theme_name\nTheme URI: " . __get_option('siteurl') . "\nDescription: A theme automatically created by the upgrade.\nVersion: 1.0\nAuthor: Moi\n*/\n";
+	$header = "/*\nTheme Name: $theme_name\nTheme URI: " . __get_option('siteurl') . "\nDescription: Tema creado automáticamente por la actualización.\nVersion: 1.0\nAuthor: Moi\n*/\n";
 
 	$stylelines = file_get_contents("$site_dir/style.css");
 	if ($stylelines) {
@@ -1450,9 +1450,9 @@ function make_site_theme_from_default($theme_name, $template) {
 		foreach ($stylelines as $line) {
 			if (strpos($line, 'Theme Name:') !== false) $line = 'Theme Name: ' . $theme_name;
 			elseif (strpos($line, 'Theme URI:') !== false) $line = 'Theme URI: ' . __get_option('url');
-			elseif (strpos($line, 'Description:') !== false) $line = 'Description: Your theme.';
+			elseif (strpos($line, 'Description:') !== false) $line = 'Description: Tu tema.';
 			elseif (strpos($line, 'Version:') !== false) $line = 'Version: 1';
-			elseif (strpos($line, 'Author:') !== false) $line = 'Author: You';
+			elseif (strpos($line, 'Author:') !== false) $line = 'Author: Tú';
 			fwrite($f, $line . "\n");
 		}
 		fclose($f);
