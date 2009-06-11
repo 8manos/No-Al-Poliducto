@@ -30,7 +30,9 @@
 			location = location.substr(0, href.length );
 
 			if ( location == href) {
+			<? if(!is_front_page()){ ?>
 			    //$(this).addClass("activo");
+			<? } ?>
 			}
 		    });
 		}
@@ -46,7 +48,7 @@ if(in_category('audio')||is_category('documentacion')){
  	while ($audios->have_posts()) : $audios->the_post();
 	$trash = $post->post_content;
  ?>
-   		 $("#mp3-<? the_ID(); ?>").jPlayer( {swfPath: "/js" , ready: function () {$("#mp3-<? the_ID(); ?>").setFile("<? extractMp3(); ?>");},cssPrefix: "my_jp_class"} );
+   	$("#mp3-<? the_ID(); ?>").jPlayer( {swfPath: "/js" , ready: function () {$("#mp3-<? the_ID(); ?>").setFile("<? extractMp3(); ?>");},cssPrefix: "my_jp_class"} );
 	$("#mp3-<? the_ID(); ?>").jPlayerId("play", "player_play-<? the_ID(); ?>");
 	$("#mp3-<? the_ID(); ?>").jPlayerId("pause", "player_pause-<? the_ID(); ?>");
 	$("#mp3-<? the_ID(); ?>").jPlayerId("stop", "player_stop-<? the_ID(); ?>");
@@ -56,7 +58,6 @@ if(in_category('audio')||is_category('documentacion')){
 	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeMax", "player_volume_max-<? the_ID(); ?>");
 	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBar", "player_volume_bar-<? the_ID(); ?>");
 	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBarValue", "player_volume_bar_value-<? the_ID(); ?>");
-
 	$("#mp3-<? the_ID(); ?>").onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
 		var myPlayedTime = new Date(playedTime);
 		var ptMin = (myPlayedTime.getMinutes() < 10) ? "0" + myPlayedTime.getMinutes() : myPlayedTime.getMinutes();

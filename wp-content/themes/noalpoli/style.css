@@ -98,7 +98,12 @@ h3 {
 	font-size: 19px;
 	font-weight: bold;
 	margin-left:-30px;
+	clear:left;
 }
+
+	h3#firmar {
+		padding-top:20px;
+	}
 
 h4 {
 	color: #699900;
@@ -108,6 +113,12 @@ h4 {
 
 .hidden {
 	display:none;
+}
+
+.clear {
+	width:100%;
+	height:0px;
+	clear:both;
 }
 
 .linklove , #li--7 , #li--7items {
@@ -160,9 +171,16 @@ div#header h1 {
 	}
 
 div#contenidos {
-	padding:10px 20px 10px 100px;
-	width:625px;
+padding:10px 20px 10px 80px;
+width:645px;
 }
+
+	div.itemBiblio {
+		float:left;
+		margin:0 15px 15px 0;
+		width:198px;
+		overflow:hidden;
+	}
 
 	cite {
 		display:block;
@@ -201,6 +219,7 @@ div#contenidos {
 		font-size:12px;
 		text-align:right;
 		margin:20px 0 30px -30px;
+		clear:left;
 	}
 
 	em.moderpend {
@@ -237,6 +256,8 @@ input#searchsubmit {
 	text-indent:-10000px;
 	padding:0;
 	margin:0;
+	cursor:pointer;
+	cursor:hand;
 }
 
 input#s {

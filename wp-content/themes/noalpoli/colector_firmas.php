@@ -17,6 +17,21 @@
 
 <!-- You can start editing here. -->
 
+
+<?php if ('open' == $post->comment_status) : ?>
+
+<div id="respond">
+
+<h3 id="firmar"><?php comment_form_title( 'Firmar', 'Firmar' ); ?></h3>
+
+<?php if ( get_option('comment_registration') && !$user_ID ) : ?>
+<p>You must be <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?redirect_to=<?php echo urlencode(get_permalink()); ?>">logged in</a> to post a comment.</p>
+<?php else : ?>
+
+<?php insert_cform(); ?>
+
+<?php endif; // If registration required and not logged in ?>
+</div>
 <?php if ( have_comments() ) : ?>
 	<h3 id="comments"><?php comments_number('No hay firmas', '1 Firma', '% Personas han firmado' );?></h3>
 
@@ -44,21 +59,5 @@
 
 	<?php endif; ?>
 <?php endif; ?>
-
-
-<?php if ('open' == $post->comment_status) : ?>
-
-<div id="respond">
-
-<h3 id="firmar"><?php comment_form_title( 'Firmar', 'Firmar' ); ?></h3>
-
-<?php if ( get_option('comment_registration') && !$user_ID ) : ?>
-<p>You must be <a href="<?php echo get_option('siteurl'); ?>/wp-login.php?redirect_to=<?php echo urlencode(get_permalink()); ?>">logged in</a> to post a comment.</p>
-<?php else : ?>
-
-<?php insert_cform(); ?>
-
-<?php endif; // If registration required and not logged in ?>
-</div>
 
 <?php endif; // if you delete this the sky will fall on your head ?>
