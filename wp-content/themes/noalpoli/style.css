@@ -101,6 +101,10 @@ h3 {
 	clear:left;
 }
 
+	h3 a:link {
+		color: #486D01;
+	}
+
 	h3#firmar {
 		padding-top:20px;
 	}
@@ -175,10 +179,22 @@ padding:10px 20px 10px 80px;
 width:645px;
 }
 
+	div#contenidos.single object , div#contenidos.single embed  {
+		width:615px;
+	}
+
+div.menosPadd {
+	margin-left:-30px;
+	width:675;
+}
+
+div.renglon {
+	clear:left;
+}
 	div.itemBiblio {
 		float:left;
 		margin:0 15px 15px 0;
-		width:198px;
+		width:210px;
 		overflow:hidden;
 	}
 
@@ -214,7 +230,7 @@ width:645px;
 
 	#contenidos h6 {
 		border-bottom:1px solid #486D01;
-		width:655px;
+		width:680px;
 		padding-bottom:5px;
 		font-size:12px;
 		text-align:right;
@@ -288,10 +304,13 @@ input#s {
 	}
 
 div#footer {
-	height:50px;
+	min-height:35px;
+	_height:35px;
 	background-image:url('img/borde_abajo.png');
 	background-repeat:no-repeat;
 	background-position:bottom;
+	text-align:center;
+	font-size:11px;
 }
 
 /* JPLAYER */

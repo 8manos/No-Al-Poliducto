@@ -2,30 +2,37 @@
 <? get_sidebar(); ?>
 <div id="contenidos">
 
-<h3>Documentos</h3>
+<h3><a href="/?cat=5">Documentos</a></h3>
 <?php $documentos = new WP_Query('showposts=3&cat=5'); if($documentos->have_posts()) : ?>
+<div class="menosPadd">
 <?php while($documentos->have_posts()) : $documentos->the_post(); ?>
 <div class="itemBiblio">
 	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
+	<? extractImage(); ?>
 	<? the_excerpt(); ?>
 </div>
 <?php endwhile; ?>
+</div>
 <h6><a href="/?cat=5">Ver todos los documentos</a></h6>
 <?php endif; ?>
 
-<h3>Videos</h3>
+<h3><a href="/?cat=4">Videos</a></h3>
 <?php $videos = new WP_Query('showposts=3&cat=4'); if($videos->have_posts()) : ?>
+<div class="menosPadd">
 <?php while($videos->have_posts()) : $videos->the_post(); ?>
 <div class="itemBiblio">
 	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
+	<? extractYouTube(); ?>
 	<? the_excerpt(); ?>
 </div>
 <?php endwhile; ?>
+</div>
 <h6><a href="/?cat=4">Ver todos los videos</a></h6>
 <?php endif; ?>
 
-<h3>Audio</h3>
+<h3><a href="/?cat=3">Audio</a></h3>
 <?php $audios = new WP_Query('showposts=3&cat=3'); if($audios->have_posts()) : ?>
+<div class="menosPadd">
 <?php while($audios->have_posts()) : $audios->the_post(); ?>
 <div class="itemBiblio">
 	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
@@ -70,6 +77,7 @@
 	<? the_excerpt(); ?>
 </div>
 <?php endwhile; ?>
+</div>
 <h6><a href="/?cat=3">Ver todos los audios</a></h6>
 <?php endif; ?>
 <div class="clear"></div>

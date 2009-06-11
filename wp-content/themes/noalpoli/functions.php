@@ -9,6 +9,47 @@ function extractMp3() {
 	echo $mp3link;
 }
 
+function extractYouTube() {
+	$content = get_the_content();
+	$pattern = "/youtube\.com\/v\/([\w\-]+)/";
+	preg_match ($pattern, $content, $match);
+	$YOUTUBE = $match[1];
+	echo '<object width="210" height="172"><param name="movie" value="http://www.youtube.com/v/'.$YOUTUBE.'"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/'.$YOUTUBE.'" type="application/x-shockwave-flash" wmode="transparent" width="210" height="172"></embed></object><br><br>';
+}
+
+function extractImage() {
+	$content = get_the_content();
+	$pattern = '/src=[\'"]?([^\'" >]+)[\'" >]/';
+	preg_match ($pattern, $content, $match);
+	$IMG = $match[0];
+	if($IMG) {
+		echo '<img '.$IMG.' width="210px" /><br><br>';
+	}
+}
+
+function wp_new_excerpt($text)
+{
+	if ($text == '')
+	{
+		$text = get_the_content('');
+		$text = strip_shortcodes( $text );
+		$text = apply_filters('the_content', $text);
+		$text = str_replace(']]>', ']]>', $text);
+		$text = strip_tags($text);
+		$text = nl2br($text);
+		$excerpt_length = apply_filters('excerpt_length', 22);
+		$words = explode(' ', $text, $excerpt_length + 1);
+		if (count($words) > $excerpt_length) {
+			array_pop($words);
+			array_push($words, '...');
+			$text = implode(' ', $words);
+		}
+	}
+	return $text;
+}
+remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+add_filter('get_the_excerpt', 'wp_new_excerpt');
+
 function sin_generators()
 {
 return '';
