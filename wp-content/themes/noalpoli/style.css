@@ -67,6 +67,16 @@ p , h1 , h2 , h3 , h4 , h5 , h6, ul, ol {
 	margin-bottom:1em;
 }
 
+q , blockquote {
+	margin-bottom:1.5em;
+}
+
+blockquote p:before {
+    content: '"'; }
+blockquote p:after {
+    content: '"'; }
+
+
 a:link {
 	color:#699900;
 	text-decoration:none;
@@ -111,8 +121,11 @@ h3 {
 
 h4 {
 	color: #699900;
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: bold;
+	margin-left:-15px;
+	margin-bottom:0.7em;
+	margin-top:1em;
 }
 
 .hidden {
@@ -198,6 +211,12 @@ div.renglon {
 		overflow:hidden;
 	}
 
+
+	div.itemBiblio h4 {
+		margin:0;
+		margin-bottom:1em;
+	}
+
 	cite {
 		display:block;
 		margin-top:-0.8em;
@@ -260,6 +279,10 @@ div#sidebarDiv {
 
 ul#sidebar {
 
+}
+
+label.screen-reader-text {
+	display:none;
 }
 
 input#searchsubmit {

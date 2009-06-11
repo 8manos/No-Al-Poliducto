@@ -62,7 +62,7 @@
 		<div id="player_volume_bar_value-<? the_ID(); ?>" class="player_volume_bar_value"></div>
 	</div>
 	<div id="player_playlist_message-<? the_ID(); ?>" class="player_playlist_message">
-		<div id="song_title-<? the_ID(); ?>" class="song_title">Junio 6</div>
+		<div id="song_title-<? the_ID(); ?>" class="song_title"></div>
 		<div id="play_time-<? the_ID(); ?>" class="play_time"></div>
 		<div id="total_time-<? the_ID(); ?>" class="total_time"></div>
 

@@ -8,7 +8,7 @@
 	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo-1.4.2-min.js'></script>
 	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/scroll.js'></script>
 	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.jplayer.js'></script>
-	<? if ( is_single() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
+	<? if ( is_single() || is_page() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
 	<script type='text/javascript'>
 	    var name = "#sidebarDiv";
 	    var menuYloc = null;
@@ -77,7 +77,7 @@ if(in_category('audio')||is_category('documentacion')){
 
 <body>
 <div class="Alertanotice">
-	Este sitio se encuentra en su etapa inicial de desarrollo, existen aún muchas cosas por finalizar, puedes seguir visitandolo para ver como avanza. Planeamos tenerlo listo finalizando esta semana. Gracias por el interes.
+	Este sitio se encuentra en su etapa BETA de desarrollo, existen aún cosas por finalizar, puedes seguir visitandolo para ver como avanza. Estará listo finalizando esta semana.
 </div>
 <div id="wrap">
 

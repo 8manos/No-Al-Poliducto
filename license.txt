@@ -1,8 +1,3 @@
------------------------------------------------------------------------
-              PARA TRADUCCION AL CASTELLANO, LEA EL ARCHIVO
-                           licencia.txt
------------------------------------------------------------------------
-
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
