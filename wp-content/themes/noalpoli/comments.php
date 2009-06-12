@@ -12,12 +12,12 @@
 
 <!-- You can start editing here. -->
 
-<div id="comments_wrap">
+<div id="comments">
 
 <?php if ( have_comments() ) : ?>
 
 
-    <h2><?php comments_number('Sin comentarios', 'Un comentario', '% Comentarios' );?> en &#8220;<?php the_title(); ?>&#8221;</h2>
+    <h2><?php comments_number('Sin comentarios', 'Un comentario', '% Comentarios' );?> en <?php the_title(); ?></h2>
 
 	<ol class="commentlist">
 	<?php wp_list_comments('avatar_size=0&type=comment'); ?>
@@ -55,7 +55,7 @@
 
 <div id="respond">
 
-<h2><?php comment_form_title( 'Participa en la conversación', 'Responde al comentario de %s' ); ?></h2>
+<h2><?php comment_form_title( 'Publicar nuevo mensaje', 'Responde al comentario de %s' ); ?></h2>
 <div class="cancel-comment-reply">
 	<p><small><?php cancel_comment_reply_link(); ?></small></p>
 </div>

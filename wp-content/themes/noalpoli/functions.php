@@ -14,7 +14,7 @@ function extractYouTube() {
 	$pattern = "/youtube\.com\/v\/([\w\-]+)/";
 	preg_match ($pattern, $content, $match);
 	$YOUTUBE = $match[1];
-	echo '<object width="210" height="172"><param name="movie" value="http://www.youtube.com/v/'.$YOUTUBE.'"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/'.$YOUTUBE.'" type="application/x-shockwave-flash" wmode="transparent" width="210" height="172"></embed></object><br><br>';
+	echo '<object width="220" height="182"><param name="movie" value="http://www.youtube.com/v/'.$YOUTUBE.'"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/'.$YOUTUBE.'" type="application/x-shockwave-flash" wmode="transparent" width="220" height="182"></embed></object><br><br>';
 }
 
 function extractImage() {
@@ -23,9 +23,23 @@ function extractImage() {
 	preg_match ($pattern, $content, $match);
 	$IMG = $match[0];
 	if($IMG) {
-		echo '<img '.$IMG.' width="210px" /><br><br>';
+		echo '<a href="'.get_permalink().'"><img '.$IMG.' width="220px" /></a><br><br>';
 	}
 }
+
+function external_links_newwindow($content){
+	preg_match('@^(?:http://)?([^/]+)@i',get_bloginfo('url'), $matches);
+	$host = $matches[1];
+	preg_match_all( '/<a(.+?)href=\"(.+?)\"(.*?)>(.+?)<\/a>/', $content, $matches );
+
+	foreach($matches[2] as $match){
+   		if(!preg_match("|$host|i", $match))
+  		$content = str_replace("href=\"$match\"","href=\"$match\" target=\"_blank\"",$content);
+	}
+	return $content;
+}
+add_action('the_content', 'external_links_newwindow');
+
 
 function wp_new_excerpt($text)
 {

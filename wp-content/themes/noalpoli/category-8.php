@@ -2,16 +2,38 @@
 <? get_sidebar(); ?>
 <div id="contenidos">
 
-<h3><a href="/?cat=5">Documentos</a></h3>
-<?php $documentos = new WP_Query('showposts=3&cat=5'); if($documentos->have_posts()) : ?>
-<div class="menosPadd">
-<?php while($documentos->have_posts()) : $documentos->the_post(); ?>
-<div class="itemBiblio">
-	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
-	<? extractImage(); ?>
-	<? the_excerpt(); ?>
+<div id="descCat">
+	<a id="subsFeed" class="floatRight" href="/feed/" title="Suscribete a este canal RSS y enterate a medida que agreguemos nuevos documentos"><img class="alignright" src="<? bloginfo('stylesheet_directory'); ?>/img/rss.png" alt="RSS"/></a>
+	<h2><? single_cat_title(); ?></h2>
+	<p><?php echo category_description(); ?></p>
 </div>
-<?php endwhile; ?>
+
+<h3><a href="/?cat=5">Documentos</a></h3>
+
+<div class="menosPadd">
+	<?php $documentos = new WP_Query('showposts=3&cat=5'); if($documentos->have_posts()) : ?>
+	<?php while($documentos->have_posts()) : $documentos->the_post(); ?>
+	<div class="itemBiblio">
+		<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
+			<? extractImage(); ?>
+			<? the_excerpt(); ?>
+		<div class="itemBiblioPie">
+			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
+	</div>
+	<?php endwhile; ?>
+	<?php $masdocumentos = new WP_Query('showposts=20&cat=5&offset=3'); if($masdocumentos->have_posts()) : ?>
+	<h4>Otros documentos</h4>
+	<ul class="masDocs">
+
+		<?php while($masdocumentos->have_posts()) : $masdocumentos->the_post(); ?>
+		<li>
+			<a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a>				
+		</li>
+		<?php endwhile; ?>
+		<?php endif; ?>
+	<div class="clear"></div>	
+	</ul>
 </div>
 <h6><a href="/?cat=5">Ver todos los documentos</a></h6>
 <?php endif; ?>
@@ -24,8 +46,22 @@
 	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
 	<? extractYouTube(); ?>
 	<? the_excerpt(); ?>
+		<div class="itemBiblioPie">
+			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
 </div>
 <?php endwhile; ?>
+	<?php $masv = new WP_Query('showposts=20&cat=4&offset=3'); if($masv->have_posts()) : ?>
+	<h4>Otros videos</h4>
+	<ul class="masDocs">
+		<?php while($masv->have_posts()) : $masv->the_post(); ?>
+		<li>
+			<a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a>				
+		</li>
+		<?php endwhile; ?>
+		<?php endif; ?>	
+	<div class="clear"></div>	
+	</ul>
 </div>
 <h6><a href="/?cat=4">Ver todos los videos</a></h6>
 <?php endif; ?>
@@ -75,8 +111,22 @@
 
 
 	<? the_excerpt(); ?>
+		<div class="itemBiblioPie">
+			<a href="<? extractMp3(); ?>">descargar</a> / <?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
 </div>
 <?php endwhile; ?>
+		<?php $masau = new WP_Query('showposts=20&cat=3&offset=3'); if($masau->have_posts()) : ?>
+	<h4>Otros audios</h4>
+	<ul class="masDocs">
+		<?php while($masau->have_posts()) : $masau->the_post(); ?>
+		<li>
+			<a href="<? the_permalink(); ?>" title="Escuchar: <? the_title(); ?>"><? the_title(); ?></a>				
+		</li>
+		<?php endwhile; ?>
+		<?php endif; ?>	
+	<div class="clear"></div>	
+	</ul>
 </div>
 <h6><a href="/?cat=3">Ver todos los audios</a></h6>
 <?php endif; ?>

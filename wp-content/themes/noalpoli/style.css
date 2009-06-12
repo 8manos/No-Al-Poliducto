@@ -103,6 +103,20 @@ ul {
 	margin-left:1.5em;
 }
 
+	ul li {
+		margin-bottom:0.5em;
+	}
+
+h2 {
+	color:#699900;
+}
+
+h2#quote {
+	text-align:center;
+	margin:-10px auto 10px auto;
+	height:28px;
+}	
+
 h3 {
 	color: #486D01;
 	font-size: 19px;
@@ -111,7 +125,7 @@ h3 {
 	clear:left;
 }
 
-	h3 a:link {
+	h3 a:link , h3 a:visited {
 		color: #486D01;
 	}
 
@@ -136,6 +150,10 @@ h4 {
 	width:100%;
 	height:0px;
 	clear:both;
+}
+
+.floatRight {
+	float:right;
 }
 
 .linklove , #li--7 , #li--7items {
@@ -165,10 +183,11 @@ div#header {
 	background-repeat:no-repeat;
 	background-position:top;
 	padding-top:15px;
+	text-align:center;
 }
 
 div#header h1 {
-	height:190px;
+	height:160px;
 	display:block;
 	overflow:hidden;
 	background-image:url('img/headernoalpolioducto.png');
@@ -183,10 +202,6 @@ div#header h1 {
 		width:100%;
 	}
 
-	div#header h2 {
-		margin-left:40px;
-	}
-
 div#contenidos {
 padding:10px 20px 10px 80px;
 width:645px;
@@ -196,26 +211,104 @@ width:645px;
 		width:615px;
 	}
 
+	div#descCat {
+		margin-left:-30px;
+		padding-bottom:0px;
+		border-bottom:2px solid #486D01;
+		margin-bottom:25px;
+		position:relative;
+	}
+
+		div#descCat a#subsFeed {
+			position:absolute;
+			right:5px;
+			bottom:5px;
+		}
+
+		div#descCat h2 {
+			color:#486D01;
+			font-size:20px;
+			margin-bottom:0.5em;
+			text-transform:uppercase;
+		}
+
+		div#descCat p {
+			width:85%;
+		}
+
 div.menosPadd {
 	margin-left:-30px;
 	width:675;
 }
+
+	div.menosPadd h4 {
+		margin-left:0;
+		clear:left;
+	}
 
 div.renglon {
 	clear:left;
 }
 	div.itemBiblio {
 		float:left;
-		margin:0 15px 15px 0;
-		width:210px;
+		margin:0 5px 15px 0;
+		width:220px;
 		overflow:hidden;
+	}
+
+	div.itemBiblio p {
+		padding:0 3px;
 	}
 
 
 	div.itemBiblio h4 {
 		margin:0;
-		margin-bottom:1em;
+		margin-bottom:0.5em;
+		background-color:#D1FFB3;
+		padding:5px;
 	}
+
+		div.itemBiblio div.itemBiblioPie {
+			font-size:0.8em;
+			line-height:1em;
+			text-align:right;
+			min-height:1.2em;
+			_height:1.2em;
+		}
+
+	ul.masDocs {
+		display:block;
+		clear:left;
+		margin:0;
+		padding:0;
+	}
+
+		ul.masDocs li {
+			display:block;
+			float:left;
+			font-size:11px;
+			height:25px;
+			margin:0;
+			overflow:hidden;
+			padding:0;
+			width:50%;
+		}
+
+		ul.masDocs li a {
+			background-color:#D1FFB3;
+			border:1px solid #8BC53F;
+			display:block;
+			height:23px;
+			line-height:25px;
+			overflow:hidden;
+			padding:0 0 0 5px;
+			color:black;
+		}
+
+			ul.masDocs a:hover {
+				background-color:#8BC53F;
+				text-decoration:none;
+			}
 
 	cite {
 		display:block;
@@ -229,6 +322,7 @@ div.renglon {
 			text-align:left;
 			font-weight:bold;
 			font-size:1.2em;
+			display:inline;
 		}
 
 			cite.fn span.residen {
@@ -257,19 +351,236 @@ div.renglon {
 		clear:left;
 	}
 
+	p.wp-caption-text {
+		color:#aaa;
+		font-size:11px;
+		font-style:italic;
+		text-align:right;
+		padding-right:25px;
+	}
+
 	em.moderpend {
 		display:block;
-		margin: 5px 0 0;
+		margin: 5px 0 1.5em;
 		padding: 5px;
 		background-color:#EFA9AD;
 		border:1px solid #E20A17;
 	}
 
+#comments
+{
+  clear:left;
+  padding-top:10px;
+}
+
+#comments ol.commentlist li.comment {
+	display:block;
+	margin-bottom:0em;
+}
+
+#comments h2 {
+	font-family: "palatino linotype",palatino,serif;
+	color: #699900;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#comments h3
+{
+  font:500 16px;
+  margin:1px;
+  padding:0;
+}
+
+#comments .meta-comment
+{
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+#comments .meta-comment a
+{
+  text-decoration:none;
+}
+
+#comments .commentlist
+{
+  list-style:none;
+  clear:both;
+  margin:0;
+  padding:0;
+}
+
+#comments .comment-meta {
+	position:absolute;
+	right:5px;
+	top:5px;
+	width:40%;
+	font-size:10px;
+	text-align:right;
+}
+
+#comments .commentlist li
+{
+  background:#F7F7F7;
+  border-bottom:1px solid #ddd;
+  padding:10px;
+	position:relative;
+}
+
+#comments .commentlist li.depth-1 {
+	border:1px solid #699900;
+	margin-bottom:2em !important;
+}
+
+#comments .commentlist li p {
+	width:78%;
+}
+
+#comments .commentlist li.alt
+{
+  background-color:#fff;
+}
+
+#comments #respond
+{
+  clear:left;
+  margin-top:30px;
+  padding:15px;
+}
+
+#comments #respond h3
+{
+  font:bold 16px;
+  border:1px solid #ccc;
+  background-color:#fff;
+  margin:1px;
+  padding:5px;
+}
+
+#comments #respond input, #comments #respond textarea , #commentform input , #commentformtextarea
+{
+  border:1px solid #ccc;
+  padding:4px;
+}
+
+#comments #respond div
+{
+  padding:5px 0;
+}
+
+#comments .cp
+{
+  font:400 9px/16px Arial, Helvetica, sans-serif;
+  text-transform:uppercase;
+}
+
+#comments .commentlist ul
+{
+  list-style:none;
+	margin:0;
+}
+
+#comments .commentlist #respond
+{
+  background-color:#fff;
+  border:1px solid #ccc;
+  margin-bottom:5px;
+  padding:10px;
+}
+
+#comments .commentlist ul li
+{
+  border:1px solid #ccc;
+  padding:10px;
+}
+
+#comments .comment-author {
+	margin-bottom:1em;
+	font-size:1.2em;
+}
+
+#comments .comment-body {
+	margin-bottom:3em;
+}
+
+#comments #respond {
+	position:relative;
+}
+
+#comments #respond h2 {
+	margin-bottom:0;
+}
+
+#comments .cancel-comment-reply{
+	display:block;
+	margin-bottom:1em;
+}
+#comments .reply a
+{
+  float:right;
+  font:400 10px Arial, Helvetica, sans-serif;
+  background-color:#fff;
+  -moz-border-radius:3px;
+  border:1px solid #ccc;
+  margin:-10px 0 0;
+  padding:3px 6px;
+}
+
+#comments .reply a:hover
+{
+  border:1px solid #333;
+}
+
+#comments code
+{
+  font:400 9px Tahoma, Arial, Helvetica, sans-serif;
+  color:#666;
+}
+
+#comments .vcard em
+{
+  font-style:normal;
+  padding-bottom:10px;
+  display:block;
+  font-weight:900;
+}
+
+#comments .vcard small
+{
+  font:9px/9px;
+  color:#999;
+}
+
+#comments #met
+{
+  float:left;
+  width:578px;
+  margin:0 0 20px;
+  padding:4px 10px;
+}
+
+#comments #met h3
+{
+  float:left;
+}
+
+#comments #met .meta-comment
+{
+  float:right;
+  margin-bottom:0;
+}
+
+label small {
+	color:#333;
+	font-size:9px;
+}
+
 div#sidebarDiv {
 	position:absolute;
 	right:16px;
 	width:215px;
-	top:250px;
+	top:231px;
 }
 
 	div#sidebarDiv ul {
@@ -277,8 +588,8 @@ div#sidebarDiv {
 		margin-left:0;
 	}
 
-ul#sidebar {
-
+ul#sidebar li {
+	margin:0;
 }
 
 label.screen-reader-text {
@@ -340,9 +651,10 @@ div#footer {
 .player_container {
 	position: relative;
 	background-color:#eee;
-	width:418px;
-	height:100px;
+	width:500px;
+	height:65px;
 	border:1px solid #009be3;
+	margin:0;
 }
 .player_container  ul.player_controls {
 	list-style-type:none;
@@ -487,4 +799,7 @@ div#footer {
 	float:right;
 	text-align: right;
 }
+
+
+
 

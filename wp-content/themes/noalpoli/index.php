@@ -5,7 +5,7 @@
 <?php if(have_posts()) : ?>
 <?php while(have_posts()) : the_post(); ?>
 <? if(!is_front_page()){ ?>
-	<h3 id="h3-<? the_ID(); ?>"><? the_title(); ?></h3>
+	<h3 id="h3-<? the_ID(); ?>"><?php edit_post_link("e","(",")"); ?> <? the_title(); ?></h3>
 <? } ?>
 <?	if(in_category('audio')){ 
 		$idu = $post->ID;
