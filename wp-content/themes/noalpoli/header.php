@@ -65,7 +65,7 @@
 <?php endwhile; ?>
 
 
-		<? } elseif (in_category('audio')||is_category('documentacion')){ 
+		<? } elseif (is_category('audio')){ 
  	$audiosh = new WP_Query('showposts=150&cat=3');
  	while ($audiosh->have_posts()) : $audiosh->the_post();
  ?>
@@ -91,7 +91,37 @@
 		$("#total_time-<? the_ID(); ?>").text(ttMin+":"+ttSec);
 	});
 
+ <?php endwhile; ?>
+
+		<? } elseif (is_category('documentacion')){ 
+ 	$audiosh = new WP_Query('showposts=3&cat=3');
+ 	while ($audiosh->have_posts()) : $audiosh->the_post();
+ ?>
+   	$("#mp3-<? the_ID(); ?>").jPlayer( {swfPath: "/js" , ready: function () {$("#mp3-<? the_ID(); ?>").setFile("<? extractMp3(); ?>");},cssPrefix: "my_jp_class"} );
+	$("#mp3-<? the_ID(); ?>").jPlayerId("play", "player_play-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("pause", "player_pause-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("stop", "player_stop-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("loadBar", "player_progress_load_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("playBar", "player_progress_play_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeMin", "player_volume_min-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeMax", "player_volume_max-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBar", "player_volume_bar-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").jPlayerId("volumeBarValue", "player_volume_bar_value-<? the_ID(); ?>");
+	$("#mp3-<? the_ID(); ?>").onProgressChange( function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+		var myPlayedTime = new Date(playedTime);
+		var ptMin = (myPlayedTime.getMinutes() < 10) ? "0" + myPlayedTime.getMinutes() : myPlayedTime.getMinutes();
+		var ptSec = (myPlayedTime.getSeconds() < 10) ? "0" + myPlayedTime.getSeconds() : myPlayedTime.getSeconds();
+		$("#play_time-<? the_ID(); ?>").text(ptMin+":"+ptSec);
+
+		var myTotalTime = new Date(totalTime);
+		var ttMin = (myTotalTime.getMinutes() < 10) ? "0" + myTotalTime.getMinutes() : myTotalTime.getMinutes();
+		var ttSec = (myTotalTime.getSeconds() < 10) ? "0" + myTotalTime.getSeconds() : myTotalTime.getSeconds();
+		$("#total_time-<? the_ID(); ?>").text(ttMin+":"+ttSec);
+	});
+
  <?php endwhile; } ?>
+
+
 	    }); 
 	</script>
 </head>
