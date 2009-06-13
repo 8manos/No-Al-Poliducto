@@ -1,7 +1,14 @@
 <? get_header(); ?>
 <? get_sidebar(); ?>
 <div id="contenidos">
-<h3><? single_cat_title(); ?></h3>
+
+<? if(is_category('audio')||is_category('documentos')||is_category('video')) { ?>
+	<div id="descCat">
+		<a id="subsFeed" class="floatRight" href="/feed/" title="Suscribete a este canal RSS y enterate a medida que agreguemos nuevos documentos"><img class="alignright" src="<? bloginfo('stylesheet_directory'); ?>/img/rss.png" alt="RSS"/></a>
+		<h2><? single_cat_title(); ?></h2>
+		<p><?php echo category_description(); ?></p>
+	</div>
+<? } ?>
 <?php if(have_posts()) : ?>
 <div class="menosPadd">
 <? $ii=0; ?><div class="renglon">
@@ -46,6 +53,16 @@
 
 
 	<? the_excerpt(); ?>
+
+	<? if(in_category('audio')){ ?>
+		<div class="itemBiblioPie">
+			<a href="<? extractMp3(); ?>">descargar</a> / <?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
+	<? }else { ?>
+		<div class="itemBiblioPie">
+			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
+	<? } ?>
 </div>
 <? $ii++ ; if($ii == 3 || $ii == 6 || $ii == 9 || $ii == 12 || $ii == 15 || $ii == 18 || $ii == 21 || $ii == 24 || $ii == 25){
 	echo  "</div><div class='renglon'>";

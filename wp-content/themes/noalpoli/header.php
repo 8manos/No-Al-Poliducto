@@ -4,11 +4,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><? bloginfo('name'); ?><? wp_title(' | '); ?></title>
 	<? wp_enqueue_script('jquery'); wp_enqueue_script('thickbox'); if ( is_single() || is_page() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
-	<link rel="stylesheet" type="text/css" href="<? bloginfo('stylesheet_url'); ?>" media="screen" />
-	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo-1.4.2-min.js'></script>
-	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/scroll.js'></script>
-	<script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.jplayer.js'></script>
-
+	<!-- <link rel="stylesheet" type="text/css" href="<? bloginfo('stylesheet_url'); ?>" media="screen" /> -->
+	<!-- <script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo-1.4.2-min.js'></script> -->
+	<!-- <script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/scroll.js'></script> -->
+	<!-- <script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.jplayer.js'></script> -->
+	<script type="text/javascript" src="/min/g=js"></script>
+	<link type="text/css" rel="stylesheet" href="/min/g=css" />
 	<script type='text/javascript'>
 	    var name = "#sidebarDiv";
 	    var menuYloc = null;
@@ -128,7 +129,7 @@
 
 <body>
 <div class="Alertanotice">
-	Este sitio se encuentra en su etapa BETA de desarrollo, existen aún cosas por finalizar, puedes seguir visitandolo para ver como avanza. Estará listo finalizando esta semana.
+	Este sitio se encuentra en su etapa de pre-lanzamiento, Estamos terminando los últimos detalles. En la tarde será el coctel de lanzamiento :D
 </div>
 <div id="wrap">
 

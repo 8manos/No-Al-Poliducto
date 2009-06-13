@@ -5,7 +5,10 @@
 <?php if(have_posts()) : ?>
 <?php while(have_posts()) : the_post(); ?>
 <? if(!is_front_page()){ ?>
-	<h3 id="h3-<? the_ID(); ?>"><?php edit_post_link("e","(",")"); ?> <? the_title(); ?></h3>
+	<h3 id="h3-<? the_ID(); ?>"><? the_title(); ?></h3>
+	<? if(is_single()){ ?>
+		<span class="metapostinf">Publicado en <? the_category(', '); ?><?php edit_post_link("editar"," - (",")"); ?> </span>
+	<? } ?>
 <? } ?>
 <?	if(in_category('audio')){ 
 		$idu = $post->ID;
@@ -44,10 +47,19 @@
 ?>
 	<? the_content(); ?>
 
+
 <?php endwhile; ?>
 <?php endif; ?>
 <? if(is_front_page()){comments_template('/colector_firmas.php');} elseif(is_page()||is_single()) { comments_template(); }; ?>
+<div class="navPosts">
+	<span class="left"><?php previous_post_link('&laquo; %link', 'anterior:<br> %title', TRUE); ?></span>
+	<span class="right"><?php next_post_link('%link &raquo;', 'siguiente:<br> %title', TRUE); ?></span>
+</div>
 </div>
 
-
+<? if(is_front_page()) { ?>
+	<div id="hiddenForm">
+		<?php insert_cform('2'); ?>
+	</div>
+<? } ?>
 <? get_footer(); ?>
