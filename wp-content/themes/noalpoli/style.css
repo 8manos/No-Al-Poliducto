@@ -158,6 +158,7 @@ h4 {
 	margin-left:-15px;
 	margin-bottom:0.7em;
 	margin-top:1em;
+	clear:left;
 }
 
 .hidden , #hiddenForm {
@@ -191,7 +192,7 @@ text-align:center;
 
 div#wrap {
 	text-align:left;
-	margin:20px auto;
+	margin:10px auto;
 	width:1000px;
 	background-image:url('img/borde_lados.png');
 	background-repeat:repeat-y;
@@ -202,18 +203,21 @@ div#header {
 	background-image:url('img/borde_arriba.png');
 	background-repeat:no-repeat;
 	background-position:top;
-	padding-top:15px;
+	padding-top:1px;
 	text-align:center;
+	height:240px;
 }
 
 div#header h1 {
-	height:160px;
-	display:block;
-	overflow:hidden;
-	background-image:url('img/headernoalpolioducto.png');
+	background-image:url(/wp-content/themes/noalpoli/img/headernoalpolioducto.png);
 	background-repeat:no-repeat;
+	display:block;
+	height:160px;
+	margin:15px auto 13px;
+	overflow:hidden;
 	text-indent:-8000px;
-	margin-left:20px;
+	width:910px;
+	overflow:hidden;
 }
 
 	div#header h1 a {
@@ -244,6 +248,7 @@ div#contenidos pre {
 	display:block;
 	float:right;
 	margin-top:-81px;
+	width:220px;
 }
 
 	div#contenidos pre a {
@@ -276,6 +281,7 @@ div#contenidos pre {
 		border-bottom:2px solid #486D01;
 		margin-bottom:25px;
 		position:relative;
+		_height:45px;
 	}
 
 		div#descCat a#subsFeed {
@@ -293,11 +299,12 @@ div#contenidos pre {
 
 		div#descCat p {
 			width:85%;
+			margin-bottom:2px;
 		}
 
 div.menosPadd {
 	margin-left:-30px;
-	width:675;
+	width:675px;
 }
 
 	div.menosPadd h4 {
@@ -467,7 +474,7 @@ div.navPosts {
 
 #comments h3
 {
-  font:500 16px;
+  font-size: 16px;
   margin:1px;
   padding:0;
 }
@@ -494,6 +501,7 @@ div.navPosts {
 #comments .comment-meta {
 	position:absolute;
 	right:5px;
+	_right:25px;
 	top:5px;
 	width:40%;
 	font-size:10px;
@@ -628,7 +636,7 @@ div.navPosts {
 
 #comments .vcard small
 {
-  font:9px/9px;
+  font-size:9px;
   color:#999;
 }
 
@@ -669,8 +677,39 @@ div#sidebarDiv {
 	}
 
 ul#sidebar li {
-	margin:0;
+	margin:0px;
+	margin-bottom:0;
 }
+
+li.widget_navt ul li {
+	margin:0px;
+}
+
+	li.widget_navt ul li a {
+		display:block;
+		line-height:25px;
+		background-color:#BAE576;
+		padding: 0 0 0 10px;
+		border:2px solid #8BC53F;
+		color:black;
+		text-decoration:none;
+		font-weight:bold;
+		margin-bottom:0px;
+		_margin-bottom:-15px;
+	}
+
+	li.widget_navt ul li a:hover{
+		background-color:#8BC53F;
+		text-decoration:none;
+	}
+
+		li.widget_navt li a:active {
+			background-color:#486D01;
+		}
+
+	li.widget_navt ul li a.activo {
+		background-color:white;
+	}
 
 label.screen-reader-text {
 	display:none;
@@ -683,9 +722,9 @@ input#searchsubmit {
 	background-image:url('img/busca.png');
 	background-repeat:no-repeat;
 	border:none;
-	text-indent:-10000px;
-	padding:0;
-	margin:0;
+	text-indent:-1900px;
+	padding:0px;
+	margin:0px;
 	cursor:pointer;
 	cursor:hand;
 }
@@ -761,29 +800,8 @@ font-weight:bold;
 margin:0;
 padding:0 2px;
 }
+	
 
-	li.widget_navt ul li a {
-		display:block;
-		line-height:25px;
-		background-color:#BAE576;
-		padding: 0 0 0 10px;
-		border:2px solid #8BC53F;
-		color:black;
-		text-decoration:none;
-		font-weight:bold;
-	}
-
-	li.widget_navt ul li a:hover{
-		background-color:#8BC53F;
-	}
-
-		li.widget_navt li a:active {
-			background-color:#486D01;
-		}
-
-	li.widget_navt ul li a.activo {
-		background-color:white;
-	}
 
 #TB_ajaxContent .cform input.backbutton, #TB_ajaxContent .cform input.resetbutton, #TB_ajaxContent .cform input.sendbutton{
 	width:190px;
@@ -947,7 +965,7 @@ div#footer {
 	}
 
 	.player_volume_min.my_jp_class_hover {
-		background-position:-20px -116px
+		background-position:-20px -116px;
 	}
 
 	.player_volume_min:active {
@@ -955,13 +973,14 @@ div#footer {
 	}
 
 .player_volume_max {
-	background:transparent url(images/botonesPlayer.png) no-repeat scroll -77px -116px;
+	background:transparent url(images/botonesPlayer.png) no-repeat scroll;
 	cursor:pointer;
 	height:20px;
 	position:absolute;
 	right:15px;
 	top:22px;
 	width:22px;
+	background-position: -77px -116px
 }
 
 	.itemBiblio .player_volume_max {
@@ -977,13 +996,6 @@ div#footer {
 		background-position:-116px -116px
 	}
 
-.player_volume_min.different_prefix_example_hover {
-	background: url("images/botonesPlayer.png") -19px -170px no-repeat;
-}
-
-.player_volume_max.different_prefix_example_hover {
-	background: url("images/botonesPlayer.png") -19px -186px no-repeat;
-}
 
 .player_volume_bar {
 	background:#86B700 none repeat scroll 0 0;
@@ -1017,7 +1029,7 @@ div#footer {
 	padding:0;
 	position:absolute;
 	top:25px;
-	width:63px;
+	width:68px;
 }
 
 	.itemBiblio .player_playlist_message {

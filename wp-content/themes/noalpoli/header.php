@@ -125,12 +125,29 @@
 
 	    }); 
 	</script>
+<!--[if lt IE 8]>
+<style type="text/css">
+input#searchsubmit {
+	text-indent:0px;
+	padding:0 0 0 60px;
+}
+
+div#contenidos pre {
+	margin-top:0px;
+}
+
+.cform input {
+	width:160px;
+}
+
+OL.cf-ol LI {
+	width:45%;
+}
+</style>
+<![endif]-->
 </head>
 
 <body>
-<div class="Alertanotice">
-	Este sitio se encuentra en su etapa de pre-lanzamiento, Estamos terminando los últimos detalles. En la tarde será el coctel de lanzamiento :D
-</div>
 <div id="wrap">
 
 <div id="body">
