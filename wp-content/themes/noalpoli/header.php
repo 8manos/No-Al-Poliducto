@@ -126,6 +126,11 @@
 
 	    }); 
 	</script>
+<style type="text/css">
+	#header h1 {
+		background-image:url('<? bloginfo('stylesheet_directory'); ?>/img/random_header/random.php');
+	}
+</style>
 <!-- #publisher=16a93774-f6b0-4efd-84b5-d4b7b619fe80&amp;type=wordpress&amp;send_services=email&amp;post_services=facebook%2Cmyspace%2Cdelicious%2Ctwitter%2Cstumbleupon%2Cfriendfeed%2Cblogger%2Cwordpress%2Cgoogle_bmarks%2Cwindows_live&amp;headerfg=%23000000&amp;headerbg=%23BAE576&amp;headerTitle=Comparte%20con%20amigos%20y%20ayudanos!&amp;wp=2.8 -->
 <!--[if lt IE 8]>
 <style type="text/css">

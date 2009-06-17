@@ -233,18 +233,17 @@ div#header {
 	background-position:top;
 	padding-top:1px;
 	text-align:center;
-	height:240px;
+	height:215px;
 }
 
 div#header h1 {
-	background-image:url(/wp-content/themes/noalpoli/img/headernoalpolioducto.png);
 	background-repeat:no-repeat;
 	display:block;
-	height:160px;
+	height:151px;
 	margin:15px auto 13px;
 	overflow:hidden;
 	text-indent:-8000px;
-	width:910px;
+	width:955px;
 	overflow:hidden;
 }
 
@@ -782,9 +781,15 @@ input#s {
 
 #TB_ajaxContent .cf-sb {
 bottom:0px;
+_bottom:-20px;
 position:absolute;
-right:15px;
+right:-23px;
 text-align:center;
+}
+
+#TB_window {
+	width:576px !important;
+	overflow:hidden !important;
 }
 
 	#TB_ajaxContent ol.cf-ol li#li-2-2 {
@@ -794,17 +799,29 @@ text-align:center;
 	}
 
 	#TB_ajaxContent li#li-2-4 label {
-		width:40px;
+		width:45px;
+		_width:85px;
 	}
 
 	#TB_ajaxContent span.reqtxt, #TB_ajaxContent span.emailreqtxt {
 		width:263px;
+		_width:180px;
 	}
+
+#TB_ajaxContent .cform {
+	width:560px;
+	margin:0;
+	padding:0;
+}
+
+#TB_ajaxContent {
+	padding:2px 0 15px;
+}
 
 #TB_ajaxContent .cform textarea {
 	height:251px;
 	overflow:auto;
-	width:545px;
+	width:529px;
 }
 
 #TB_ajaxContent div.success {
