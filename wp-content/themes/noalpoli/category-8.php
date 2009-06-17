@@ -130,8 +130,38 @@
 </div>
 <h6><a href="/?cat=3">Ver todos los audios</a></h6>
 <?php endif; ?>
+
+
+<h3><a href="/?cat=9">Fotos</a></h3>
+
+<div class="menosPadd">
+	<?php $fotos = new WP_Query('showposts=3&cat=9'); if($fotos->have_posts()) : ?>
+	<?php while($fotos->have_posts()) : $fotos->the_post(); ?>
+	<div class="itemBiblio">
+		<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
+			<? extractImage(); ?>
+			<? the_excerpt(); ?>
+		<div class="itemBiblioPie">
+			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
+	</div>
+	<?php endwhile; ?>
+	<?php $masfotos = new WP_Query('showposts=20&cat=9&offset=3'); if($masfotos->have_posts()) : ?>
+	<h4>Otros documentos</h4>
+	<ul class="masDocs">
+
+		<?php while($masfotos->have_posts()) : $masfotos->the_post(); ?>
+		<li>
+			<a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a>				
+		</li>
+		<?php endwhile; ?>
+		<?php endif; ?>
+	<div class="clear"></div>	
+	</ul>
+</div>
+<h6><a href="/?cat=9">Ver todas las fotos</a></h6>
+<?php endif; ?>
 <div class="clear"></div>
 </div>
-
 
 <? get_footer(); ?>

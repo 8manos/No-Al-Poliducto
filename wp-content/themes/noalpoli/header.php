@@ -32,8 +32,11 @@
 			location = location.substr(0, href.length );
 
 			if ( location == href) {
+
+			    $(this).addClass("activo");
+
 			<? if(!is_front_page()){ ?>
-			    //$(this).addClass("activo");
+				$('.widget_navt ul li:first a').removeClass("activo");
 			<? } ?>
 			}
 		    });

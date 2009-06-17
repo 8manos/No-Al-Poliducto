@@ -738,6 +738,10 @@ li.widget_navt ul li {
 		background-color:white;
 	}
 
+	li.widget_navt ul li a.activo:hover {
+		background-color:#8BC53F;
+	}
+
 label.screen-reader-text {
 	display:none;
 }
