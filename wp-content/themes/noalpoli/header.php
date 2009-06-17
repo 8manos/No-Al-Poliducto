@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><? bloginfo('name'); ?><? wp_title(' | '); ?></title>
+	<link rel="shortcut icon" href="/favicon.ico">
 	<? wp_enqueue_script('jquery'); wp_enqueue_script('thickbox'); if ( is_single() || is_page() ) wp_enqueue_script( 'comment-reply' ); wp_head(); ?>
 	<!-- <link rel="stylesheet" type="text/css" href="<? bloginfo('stylesheet_url'); ?>" media="screen" /> -->
 	<!-- <script type='text/javascript' src='<? bloginfo('stylesheet_directory'); ?>/js/jquery.scrollTo-1.4.2-min.js'></script> -->
@@ -125,6 +126,7 @@
 
 	    }); 
 	</script>
+<!-- #publisher=16a93774-f6b0-4efd-84b5-d4b7b619fe80&amp;type=wordpress&amp;send_services=email&amp;post_services=facebook%2Cmyspace%2Cdelicious%2Ctwitter%2Cstumbleupon%2Cfriendfeed%2Cblogger%2Cwordpress%2Cgoogle_bmarks%2Cwindows_live&amp;headerfg=%23000000&amp;headerbg=%23BAE576&amp;headerTitle=Comparte%20con%20amigos%20y%20ayudanos!&amp;wp=2.8 -->
 <!--[if lt IE 8]>
 <style type="text/css">
 input#searchsubmit {

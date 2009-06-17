@@ -47,7 +47,6 @@
 ?>
 	<? the_content(); ?>
 
-
 <?php endwhile; ?>
 <?php endif; ?>
 <? if(is_front_page()){comments_template('/colector_firmas.php');} elseif(is_page()||is_single()) { comments_template(); }; ?>

@@ -33,7 +33,7 @@
 <?php endif; // If registration required and not logged in ?>
 </div>
 <?php if ( have_comments() ) : ?>
-	<h3 id="comments"><?php comments_number('No hay firmas', '1 Firma', '% Personas han firmado' );?></h3>
+	<h3 id="comments"><?php comments_number('No hay firmas', '1 Firma', '% Personas han firmado' );?> - <?if(is_front_page()){if (function_exists('sharethis_button')) { sharethis_button(); }} ?></h3>
 
 	<div class="navigation">
 		<div class="alignleft"><?php previous_comments_link() ?></div>

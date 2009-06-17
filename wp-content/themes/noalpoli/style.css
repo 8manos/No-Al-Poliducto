@@ -57,6 +57,34 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 body {
 	text-align:center;
 	font-family: "palatino linotype",palatino,serif;
+
+}
+#sub_header {
+	display:none !important;
+}
+
+.stico_default {
+	background-image:none !important;
+}
+
+a.stbutton {
+padding:1px 5px 5px 5px !important;
+}	
+
+span.stbuttontext {
+background-image:url(/wp-content/themes/noalpoli/img/invitar.png);
+display:block;
+float:right;
+height:35px;
+margin:-28px 224px 0 0;
+overflow:hidden;
+text-indent:-10000px;
+width:215px;
+_margin:-28px 0 0 0;
+}
+
+span.stbuttontext:hover {
+	background-position: -2px -39px;
 }
 
 strong , b {
