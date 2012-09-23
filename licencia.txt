@@ -24,6 +24,7 @@ traducción ayude a los hispanohablantes a entender mejor la GNU GPL.
   * Jesús González Barahona
   * Pedro de las Heras Quirós
   * Jordi J. Canals  (Revisión y Formato. Junio de 2008)
+  * Fernando Tellado (A partir de Noviembre de 2009)
 
 
 -----------------------------------------------------------------------
