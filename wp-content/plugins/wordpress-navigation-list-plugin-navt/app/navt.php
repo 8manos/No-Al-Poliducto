@@ -25,9 +25,9 @@
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  *
  * -----------------------------------------------------------------------------
- * $Id: navt.php 104691 2009-03-23 21:09:53Z gbellucci $:
- * $Date: 2009-03-23 21:09:53 +0000 (Mon, 23 Mar 2009) $:
- * $Revision: 104691 $:
+ * $Id: navt.php 134443 2009-07-12 13:37:29Z gbellucci $:
+ * $Date: 2009-07-12 13:37:29 +0000 (Sun, 12 Jul 2009) $:
+ * $Revision: 134443 $:
  * -----------------------------------------------------------------------------
  */
 global $wp_db_version;
@@ -61,7 +61,7 @@ class NAVT {
         $navt_map = array();
 
         $role = get_role('administrator');
-        if(!$role->has_cap('manage_navt_lists')) {
+        if( is_object($role) && !empty($role) ) {
             $role->add_cap('manage_navt_lists');
         }
         /**
@@ -69,7 +69,7 @@ class NAVT {
          * @since 1.0.27
          */
         $role = get_role('editor');
-        if(!$role->has_cap('manage_navt_lists')) {
+        if( is_object($role) && !empty($role)) {
             $role->add_cap('manage_navt_lists');
         }
 
@@ -184,6 +184,9 @@ class NAVT {
      */
     function navt_content($atts, $content=null) {
         $out = '';
+        $id = '@nolist@';
+        $title = '@notitle@';
+        
         do_action('dbnavt', NAVT_GEN, sprintf("%s::%s attributes\n", __CLASS__, __FUNCTION__), $atts);
         do_action('dbnavt', NAVT_GEN, sprintf("%s::%s - content: %s\n", __CLASS__, __FUNCTION__, $content));
         extract( shortcode_atts( array( 'id' => '@nolist@', 'title' => '@notitle@'), $atts) );

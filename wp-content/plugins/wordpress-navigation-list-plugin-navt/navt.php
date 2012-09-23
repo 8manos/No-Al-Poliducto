@@ -3,14 +3,14 @@
 Plugin Name: Wordpress Navigation List Plugin NAVT
 Plugin URI: http://atalayastudio.com
 Description: Create, organize and manage your web site navigation by logically grouping your pages, categories and user's via a drag'n drop interface. Manage your navigation lists from the NAVT Lists menu tab in the Manage menu.
-Version: 1.0.32
+Version: 1.0.34
 Author: Greg Bellucci
 Author URI: http://gbellucci.us
 
  -----------------------------------------------------------------------------
- $Id: navt.php 120590 2009-05-26 15:19:06Z gbellucci $:
- $Date: 2009-05-26 15:19:06 +0000 (Tue, 26 May 2009) $:
- $Revision: 120590 $:
+ $Id: navt.php 138443 2009-07-23 17:16:00Z gbellucci $:
+ $Date: 2009-07-23 17:16:00 +0000 (Thu, 23 Jul 2009) $:
+ $Revision: 138443 $:
  -----------------------------------------------------------------------------
 
 

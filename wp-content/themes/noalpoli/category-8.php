@@ -38,33 +38,6 @@
 <h6><a href="/?cat=5">Ver todos los documentos</a></h6>
 <?php endif; ?>
 
-<h3><a href="/?cat=4">Videos</a></h3>
-<?php $videos = new WP_Query('showposts=3&cat=4'); if($videos->have_posts()) : ?>
-<div class="menosPadd">
-<?php while($videos->have_posts()) : $videos->the_post(); ?>
-<div class="itemBiblio">
-	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
-	<? extractYouTube(); ?>
-	<? the_excerpt(); ?>
-		<div class="itemBiblioPie">
-			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
-		</div>
-</div>
-<?php endwhile; ?>
-	<?php $masv = new WP_Query('showposts=20&cat=4&offset=3'); if($masv->have_posts()) : ?>
-	<h4>Otros videos</h4>
-	<ul class="masDocs">
-		<?php while($masv->have_posts()) : $masv->the_post(); ?>
-		<li>
-			<a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a>				
-		</li>
-		<?php endwhile; ?>
-		<?php endif; ?>	
-	<div class="clear"></div>	
-	</ul>
-</div>
-<h6><a href="/?cat=4">Ver todos los videos</a></h6>
-<?php endif; ?>
 
 <h3><a href="/?cat=3">Audio</a></h3>
 <?php $audios = new WP_Query('showposts=3&cat=3'); if($audios->have_posts()) : ?>
@@ -161,6 +134,34 @@
 </div>
 <h6><a href="/?cat=9">Ver todas las fotos</a></h6>
 <?php endif; ?>
+<h3><a href="/?cat=4">Videos</a></h3>
+<?php $videos = new WP_Query('showposts=3&cat=4'); if($videos->have_posts()) : ?>
+<div class="menosPadd">
+<?php while($videos->have_posts()) : $videos->the_post(); ?>
+<div class="itemBiblio">
+	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
+	<? extractYouTube(); ?>
+	<? the_excerpt(); ?>
+		<div class="itemBiblioPie">
+			<?php comments_popup_link('comentar','1 comentario','% comentarios');?> / <a href="<? the_permalink(); ?>" title="<? the_title(); ?>">ver completo</a>
+		</div>
+</div>
+<?php endwhile; ?>
+	<?php $masv = new WP_Query('showposts=20&cat=4&offset=3'); if($masv->have_posts()) : ?>
+	<h4>Otros videos</h4>
+	<ul class="masDocs">
+		<?php while($masv->have_posts()) : $masv->the_post(); ?>
+		<li>
+			<a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a>				
+		</li>
+		<?php endwhile; ?>
+		<?php endif; ?>	
+	<div class="clear"></div>	
+	</ul>
+</div>
+<h6><a href="/?cat=4">Ver todos los videos</a></h6>
+<?php endif; ?>
+
 <div class="clear"></div>
 </div>
 

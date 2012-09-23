@@ -342,6 +342,8 @@ function get_post_class( $class = '', $post_id = null ) {
 		$classes = array_merge($classes, $class);
 	}
 
+	$classes = array_map('esc_attr', $classes);
+
 	return apply_filters('post_class', $classes, $class, $post_id);
 }
 
@@ -430,13 +432,14 @@ function get_body_class( $class = '' ) {
 		if ( $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_parent = %d AND post_type = 'page' LIMIT 1", $pageID) ) )
 			$classes[] = 'page-parent';
 
-		if ( $wp_query->post->post_parent )
+		if ( $wp_query->post->post_parent ) {
 			$classes[] = 'page-child';
 			$classes[] = 'parent-pageid-' . $wp_query->post->post_parent;
-
-		if ( is_page_template() )
+		}
+		if ( is_page_template() ) {
 			$classes[] = 'page-template';
 			$classes[] = 'page-template-' . str_replace( '.php', '-php', get_post_meta( $pageID, '_wp_page_template', true ) );
+		}
 	} elseif ( is_search() ) {
 		if ( !empty($wp_query->posts) )
 			$classes[] = 'search-results';
@@ -476,6 +479,8 @@ function get_body_class( $class = '' ) {
 			$class = preg_split('#\s+#', $class);
 		$classes = array_merge($classes, $class);
 	}
+
+	$classes = array_map('esc_attr', $classes);
 
 	return apply_filters('body_class', $classes, $class);
 }
@@ -705,6 +710,7 @@ function wp_dropdown_pages($args = '') {
 
 	$pages = get_pages($r);
 	$output = '';
+	$name = esc_attr($name);
 
 	if ( ! empty($pages) ) {
 		$output = "<select name=\"$name\" id=\"$name\">\n";
@@ -805,7 +811,7 @@ function wp_list_pages($args = '') {
  * @param array|string $args
  */
 function wp_page_menu( $args = array() ) {
-	$defaults = array('sort_column' => 'post_title', 'menu_class' => 'menu', 'echo' => true, 'link_before' => '', 'link_after' => '');
+	$defaults = array('sort_column' => 'menu_order, post_title', 'menu_class' => 'menu', 'echo' => true, 'link_before' => '', 'link_after' => '');
 	$args = wp_parse_args( $args, $defaults );
 	$args = apply_filters( 'wp_page_menu_args', $args );
 
@@ -841,7 +847,7 @@ function wp_page_menu( $args = array() ) {
 	if ( $menu )
 		$menu = '<ul>' . $menu . '</ul>';
 
-	$menu = '<div class="' . $args['menu_class'] . '">' . $menu . "</div>\n";
+	$menu = '<div class="' . esc_attr($args['menu_class']) . '">' . $menu . "</div>\n";
 	$menu = apply_filters( 'wp_page_menu', $menu, $args );
 	if ( $args['echo'] )
 		echo $menu;

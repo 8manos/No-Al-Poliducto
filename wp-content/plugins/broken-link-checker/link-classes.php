@@ -94,19 +94,24 @@ class blcLink {
    *
    * @return bool 
    */
-	function check(){
+	function check( $timeout = 40 ){
 		if ( !$this->valid() ) return false;
+		
+		//General note : there is usually no need to save() the result of the check
+		//in this method because it will be typically called from wsBrokenLinkChecker::work() 
+		//that will call the save() method for us.
+		
 		/*
         Check for problematic (though not necessarily "broken") links.
         If a link has been checked multiple times and still hasn't been marked as 
 		timed-out or broken then probably the checking algorithm is having problems with 
 		that link. Mark it as timed-out and hope the user sorts it out.
         */
-        if ( ($this->check_count >= 3) && ( !$this->timeout ) && ( !$this->http_code ) ) {
-        	$this->timeout = 1;
+        if ( ($this->check_count >= 3) && ( !$this->timeout ) && ( $this->http_code == BLC_CHECKING ) ) {
+        	$this->timeout = true;
+        	$this->http_code = BLC_TIMEOUT;
         	$this->last_check = date('Y-m-d H:i:s');
         	$this->log .= "\r\n[A weird error was detected. This should never happen.]";
-        	$this->save();
             return false;
         }
         
@@ -117,7 +122,7 @@ class blcLink {
         $this->last_check = date('Y-m-d H:i:s');
         $this->log = '';
         $this->final_url = '';
-        $this->http_code = 0;
+        $this->http_code = BLC_CHECKING;
         $this->request_duration = 0;
         $this->timeout = false;
         $this->redirect_count = 0;
@@ -132,7 +137,8 @@ class blcLink {
         $parts = parse_url($url);
         //Only HTTP links are checked. All others are automatically considered okay.
         if ( ($parts['scheme'] != 'http') && ($parts['scheme'] != 'https') ) {
-            $this->log .= "URL protocol ($parts[scheme]) is not HTTP. This link won't be checked.\n";
+            $this->log .= "URL protocol ($parts[scheme]) is not HTTP(S). This link won't be checked.\n";
+            $this->http_code = 200;
             return true;
         }
         
@@ -143,101 +149,151 @@ class blcLink {
 		}
         
         //******* Use CURL if available ***********
-        if (function_exists('curl_init')) {
+        if ( function_exists('curl_init') ) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_URL, blcUtility::urlencodefix($url));
             //Masquerade as Internet explorer
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)');
             //Add a semi-plausible referer header to avoid tripping up some bot traps 
             curl_setopt($ch, CURLOPT_REFERER, get_option('home'));
             
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-
-            @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            //Redirects don't work when safe mode or open_basedir is enabled.
+            if ( !blcUtility::is_safe_mode() && !blcUtility::is_open_basedir() ) {
+	            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            }
             curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+            
+            //Set the timeout
+            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+            
+            //Set the proxy configuration. The user can provide this in wp-config.php 
+            if (defined('WP_PROXY_HOST')) {
+				curl_setopt($ch, CURLOPT_PROXY, WP_PROXY_HOST);
+			}
+			
+			if (defined('WP_PROXY_PORT')) { 
+				curl_setopt($ch, CURLOPT_PROXYPORT, WP_PROXY_PORT);
+			}
+			
+			if (defined('WP_PROXY_USERNAME')){
+				$auth = WP_PROXY_USERNAME;
+				if (defined('WP_PROXY_PASSWORD')){
+					$auth .= ':' . WP_PROXY_PASSWORD;
+				}
+				curl_setopt($ch, CURLOPT_PROXYUSERPWD, $auth);
+			}
 
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
+			//Is this even necessary?
             curl_setopt($ch, CURLOPT_FAILONERROR, false);
 
-            $nobody=false;
-            if($parts['scheme']=='https'){
+            $nobody = false;
+            if( $parts['scheme'] == 'https' ){
             	//TODO: Redirects don't work with HTTPS
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  0);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             } else {
-                $nobody=true;
-                curl_setopt($ch, CURLOPT_NOBODY, true);
-                //curl_setopt($ch, CURLOPT_RANGE, '0-1023');
+                $nobody = true;
+                curl_setopt($ch, CURLOPT_NOBODY, true); //Use the HEAD method for non-https URLs 
             }
             
-            //We definitely want headers.
-            curl_setopt($ch, CURLOPT_HEADER, true);
-            //register a callback function which will process the headers
-			//this assumes your code is into a class method, and uses $this->readHeader 
-			//as the callback function.
+            //Register a callback function which will process the HTTP header(s).
+			//It can be called multiple times if the remote server performs a redirect. 
 			curl_setopt($ch, CURLOPT_HEADERFUNCTION, array(&$this,'read_header'));
 
 			//Execute the request
-            $response = curl_exec($ch);
+            curl_exec($ch);
             
 			$info = curl_getinfo($ch);
             $code = intval( $info['http_code'] );
+            
+            $this->log .= '=== ';
+            
+            if ( $code ){
+				$this->log .= sprintf( __('First try : %d', 'broken-link-checker'), $code);
+			} else {
+				$this->log .= __('First try : 0 (No response)', 'broken-link-checker');
+			}
+			
+			$this->log .= " ===\n\n";
 
-            $this->log .= "=== First try : $code ".(!$code?'(No response) ':'')."===\n\n";
             $this->log .= $this->last_headers."\n";
 
             if ( (($code<200) || ($code>=400)) && $nobody) {
-                $this->log .= "Trying a second time with different settings...\n";
+                $this->log .= __("Trying a second time with different settings...", 'broken-link-checker') . "\n";
                 $this->last_headers = '';
                 
-                curl_setopt($ch, CURLOPT_NOBODY, false);
-                curl_setopt($ch, CURLOPT_HTTPGET, true);
-                curl_setopt($ch, CURLOPT_RANGE, '0-2047');
-                $response = curl_exec($ch);
+                curl_setopt($ch, CURLOPT_NOBODY, false); //Don't send a HEAD request this time 
+                curl_setopt($ch, CURLOPT_HTTPGET, true); //Switch back to GET instead.
+                curl_setopt($ch, CURLOPT_RANGE, '0-2047');//But limit the desired response size, 
+				                                          //we don't want to eat the user's bandwidth. 
+                //Run it again
+                curl_exec($ch);
                 
                 $info = curl_getinfo($ch);
             	$code = intval( $info['http_code'] );
+            	
+            	$this->log .= '=== ';
+	            if ( $code ){
+					$this->log .= sprintf( __('Second try : %d', 'broken-link-checker'), $code);
+				} else {
+					$this->log .= __('Second try : 0 (No response)', 'broken-link-checker');
+				}
+				$this->log .= " ===\n\n";
 
-                $this->log .= "=== Second try : $code ".(!$code?'(No response) ':'')."===\n\n";
             	$this->log .= $this->last_headers."\n";
             }
             
-            $this->http_code = $code;
+            $this->http_code = $code != 0 ? $code : BLC_TIMEOUT;
             $this->final_url = $info['url'];
             $this->request_duration = $info['total_time'];
             $this->redirect_count = $info['redirect_count'];
+            
+            //When safe_mode or open_basedir is enabled CURL will be forbidden from following redirects,
+            //so redirect_count will be 0 for all URLs. As a workaround, set it to 1 when the HTTP
+			//response codes indicates a redirect but redirect_count is zero.
+			//Note to self : Extracting the Location header might also be helpful.
+			if ( ($this->redirect_count == 0) && ( in_array( $this->http_code, array(301, 302, 307) ) ) ){
+				$this->redirect_count = 1;
+			} 
+                            
 
             curl_close($ch);
 
-        } elseif (class_exists('Snoopy')) {
+        } elseif ( class_exists('Snoopy') ) {
             //******** Use Snoopy if CURL is not available *********
             //Note : Snoopy doesn't work too well with HTTPS URLs.
-            $this->log .= "<em>(Using Snoopy)</em>\n";
+            $this->log .= "<em>(" . __('Using Snoopy', 'broken-link-checker') . ")</em>\n";
 
 			$start_time = microtime_float(true);
 			
             $snoopy = new Snoopy;
-            $snoopy->read_timeout = 60; //read timeout in seconds
+            $snoopy->read_timeout = $timeout; //read timeout in seconds
+            $snoopy->maxlength = 1024*5; //load up to 5 kilobytes
             $snoopy->fetch($url);
             
-            $this->request_duration = $start_time - microtime_float(true);
+            $this->request_duration = microtime_float(true) - $start_time;
 
-            $this->http_code = $snoopy->status; //HTTP status code
+            $this->http_code = $snoopy->status; //HTTP status code (note : Snoopy returns -100 on timeout)
+            if ( $this->http_code == -100 ){
+				$this->http_code = BLC_TIMEOUT;
+				$this->timeout = true;
+			}
 
             if ($snoopy->error)
                 $this->log .= $snoopy->error."\n";
             if ($snoopy->timed_out)
-                $this->log .= "Request timed out.\n";
+                $this->log .= __("Request timed out.", 'broken-link-checker') . "\n";
 
 			if ( is_array($snoopy->headers) )
             	$this->log .= implode("", $snoopy->headers)."\n"; //those headers already contain newlines
 
-            if ($snoopy->lastredirectaddr) {
+			//Redirected? 
+            if ( $snoopy->lastredirectaddr ) {
                 $this->final_url = $snoopy->lastredirectaddr;
                 $this->redirect_count = $snoopy->_redirectdepth;
-            }
+            } else {
+				$this->final_url = $this->url;
+			}
         }
 
         /*"Good" response codes are anything in the 2XX range (e.g "200 OK") and redirects  - the 3XX range.
@@ -245,23 +301,22 @@ class blcLink {
           are treated as "page doesn't exist'". */
         //TODO: Treat circular redirects as broken links.
         if ( (($this->http_code>=200) && ($this->http_code<400)) || ($this->http_code == 401) ) {
-        	$this->log .= "Link is valid.";
+        	$this->log .= __("Link is valid.", 'broken-link-checker');
         	//Reset the check count for valid links.
         	$this->check_count = 0; 
         	return true;
         } else {
-			$this->log .= "Link is broken.";
-			if ($this->http_code == 0){
+			$this->log .= __("Link is broken.", 'broken-link-checker');
+			if ( $this->http_code == BLC_TIMEOUT ){
 				//This is probably a timeout
 				$this->timeout = true;
-				$this->log .= "\r\n(Most likely the connection timed out)";
+				$this->log .= "\r\n(" . __("Most likely the connection timed out or the domain doesn't exist.", 'broken-link-checker');
 			}
 			return false;
 		}
 	}
 	
 	function read_header($ch, $header){
-		//extracting example data: filename from header field Content-Disposition
 		$this->last_headers .= $header;
 		return strlen($header);
 	}
@@ -296,7 +351,8 @@ class blcLink {
 				//If the link was successfully saved then it's no longer "new"
 				$this->is_new = !$rez;
 			} else {
-				echo "Error adding link $url : {$wpdb->last_error}\r\n<br>";
+				printf( __('Error adding link %s : %s', 'broken-link-checker'), $url, $wpdb->last_error );
+				echo "\r\n<br>";
 			}
 				
 			return $rez;
@@ -315,7 +371,8 @@ class blcLink {
 			if ( $rez !== false ){
 				//echo "Link updated, ID : {$this->link_id}\r\n<br>";
 			} else {
-				echo "Error updating link {$this->link_id} : {$wpdb->last_error}\r\n<br>";
+				printf( __('Error updating link %d : %s', 'broken-link-checker'), $this->link_id, $wpdb->last_error );
+				echo "\r\n<br>";
 			}
 			return $rez !== false;			
 		}

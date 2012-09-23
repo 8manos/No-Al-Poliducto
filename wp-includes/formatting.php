@@ -80,8 +80,8 @@ function wptexturize($text) {
 }
 
 function wptexturize_pushpop_element($text, &$stack, $disabled_elements, $opening = '<', $closing = '>') {
-	$o = preg_quote($opening);
-	$c = preg_quote($closing);
+	$o = preg_quote($opening, '/');
+	$c = preg_quote($closing, '/');
 	foreach($disabled_elements as $element) {
 		if (preg_match('/^'.$o.$element.'\b/', $text)) array_push($stack, $element);
 		if (preg_match('/^'.$o.'\/'.$element.$c.'/', $text)) {
@@ -600,7 +600,7 @@ function remove_accents($string) {
  */
 function sanitize_file_name( $filename ) {
 	$filename_raw = $filename;
-	$special_chars = array("?", "[", "]", "/", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}");
+	$special_chars = array("?", "[", "]", "/", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr(0));
 	$special_chars = apply_filters('sanitize_file_name_chars', $special_chars, $filename_raw);
 	$filename = str_replace($special_chars, '', $filename);
 	$filename = preg_replace('/[\s-]+/', '-', $filename);
@@ -1452,18 +1452,20 @@ function wp_iso_descrambler($string) {
  * Returns a date in the GMT equivalent.
  *
  * Requires and returns a date in the Y-m-d H:i:s format. Simply subtracts the
- * value of the 'gmt_offset' option.
+ * value of the 'gmt_offset' option. Return format can be overridden using the
+ * $format parameter
  *
  * @since 1.2.0
  *
  * @uses get_option() to retrieve the the value of 'gmt_offset'.
  * @param string $string The date to be converted.
+ * @param string $format The format string for the returned date (default is Y-m-d H:i:s)
  * @return string GMT version of the date provided.
  */
-function get_gmt_from_date($string) {
+function get_gmt_from_date($string, $format = 'Y-m-d H:i:s') {
 	preg_match('#([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#', $string, $matches);
 	$string_time = gmmktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-	$string_gmt = gmdate('Y-m-d H:i:s', $string_time - get_option('gmt_offset') * 3600);
+	$string_gmt = gmdate($format, $string_time - get_option('gmt_offset') * 3600);
 	return $string_gmt;
 }
 
@@ -1471,17 +1473,18 @@ function get_gmt_from_date($string) {
  * Converts a GMT date into the correct format for the blog.
  *
  * Requires and returns in the Y-m-d H:i:s format. Simply adds the value of
- * gmt_offset.
+ * gmt_offset.Return format can be overridden using the $format parameter
  *
  * @since 1.2.0
  *
  * @param string $string The date to be converted.
+ * @param string $format The format string for the returned date (default is Y-m-d H:i:s)
  * @return string Formatted date relative to the GMT offset.
  */
-function get_date_from_gmt($string) {
+function get_date_from_gmt($string, $format = 'Y-m-d H:i:s') {
 	preg_match('#([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#', $string, $matches);
 	$string_time = gmmktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-	$string_localtime = gmdate('Y-m-d H:i:s', $string_time + get_option('gmt_offset')*3600);
+	$string_localtime = gmdate($format, $string_time + get_option('gmt_offset')*3600);
 	return $string_localtime;
 }
 
@@ -2042,8 +2045,8 @@ function clean_url( $url, $protocols = null, $context = 'display' ) {
 
 	if ('' == $url) return $url;
 	$url = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $url);
-	$strip = array('%0d', '%0a');
-	$url = str_replace($strip, '', $url);
+	$strip = array('%0d', '%0a', '%0D', '%0A');
+	$url = _deep_replace($strip, $url);
 	$url = str_replace(';//', '://', $url);
 	/* If the URL doesn't appear to contain a scheme, we
 	 * presume it needs http:// appended (unless a relative
@@ -2065,6 +2068,35 @@ function clean_url( $url, $protocols = null, $context = 'display' ) {
 		return '';
 
 	return apply_filters('clean_url', $url, $original_url, $context);
+}
+
+/**
+ * Perform a deep string replace operation to ensure the values in $search are no longer present
+ * 
+ * Repeats the replacement operation until it no longer replaces anything so as to remove "nested" values
+ * e.g. $subject = '%0%0%0DDD', $search ='%0D', $result ='' rather than the '%0%0DD' that
+ * str_replace would return
+ * 
+ * @since 2.8.1
+ * @access private
+ * 
+ * @param string|array $search
+ * @param string $subject
+ * @return string The processed string
+ */
+function _deep_replace($search, $subject){
+	$found = true;
+	while($found) {
+		$found = false;
+		foreach( (array) $search as $val ) {
+			while(strpos($subject, $val) !== false) {
+				$found = true;
+				$subject = str_replace($val, '', $subject);
+			}
+		}
+	}
+	
+	return $subject;
 }
 
 /**

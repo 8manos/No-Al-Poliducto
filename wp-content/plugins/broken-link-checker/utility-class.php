@@ -6,17 +6,30 @@
  */
  
  
-if (!function_exists('json_encode')){
+if ( is_admin() && !function_exists('json_encode') ){
 	//Load JSON functions for PHP < 5.2
 	if (!class_exists('Services_JSON')){
 		require 'JSON.php';
 	}
 	
-	//Backwards fompatible json_encode.
+	//Backwards compatible json_encode
 	function json_encode($data) {
 	    $json = new Services_JSON();
 	    return( $json->encode($data) );
 	}
+}
+
+if ( !function_exists('sys_get_temp_dir')) {
+  function sys_get_temp_dir() {
+    if (!empty($_ENV['TMP'])) { return realpath($_ENV['TMP']); }
+    if (!empty($_ENV['TMPDIR'])) { return realpath( $_ENV['TMPDIR']); }
+    if (!empty($_ENV['TEMP'])) { return realpath( $_ENV['TEMP']); }
+    $tempfile = tempnam(uniqid(rand(),TRUE),'');
+    if (file_exists($tempfile)) {
+	    unlink($tempfile);
+	    return realpath(dirname($tempfile));
+    }
+  }
 }
 
 if ( !class_exists('blcUtility') ){
@@ -25,25 +38,29 @@ class blcUtility {
 	
     //A regxp for images
     function img_pattern(){
-	    //        \1                        \2       \3 URL       \4
-	    return '/(<img[\s]+[^>]*src\s*=\s*)([\"\']?)([^\'\">]+)\2([^<>]*>)/i';
+	    //        \1                        \2      \3 URL    \4
+	    return '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i';
 	}
 	
 	//A regexp for links
 	function link_pattern(){
-	    //	      \1                       \2      \3 URL        \4       \5 Text  \6
-	    return '/(<a[\s]+[^>]*href\s*=\s*)([\"\']+)([^\'\">]+)\2([^<>]*>)((?sU).*)(<\/a>)/i';
+	    //	      \1                       \2      \3 URL    \4       \5 Text  \6
+	    return '/(<a[\s]+[^>]*href\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)((?sU).*)(<\/a>)/i';
 	}	
 	
   /**
    * blcUtility::normalize_url()
    *
    * @param string $url
+   * @params string $base_url (Optional) The base URL is used to convert a relative URL to a fully-qualified one
    * @return string A normalized URL or FALSE if the URL is invalid
    */
-	function normalize_url($url){
-	    $parts=@parse_url($url);
-	    if(!$parts) return false;
+	function normalize_url($url, $base_url = ''){
+		//Sometimes links may contain shortcodes. Parse them.
+		$url = do_shortcode($url);
+		
+	    $parts = @parse_url($url);
+	    if(!$parts) return false; //Invalid URL
 	
 	    if(isset($parts['scheme'])) {
 	        //Only HTTP(S) links are checked. Other protocols are not supported.
@@ -53,20 +70,21 @@ class blcUtility {
 	
 	    $url = html_entity_decode($url);
 	    $url = preg_replace(
-	        array('/([\?&]PHPSESSID=\w+)$/i',
-	              '/(#[^\/]*)$/',
-	              '/&amp;/',
-	              '/^(javascript:.*)/i',
-	              '/([\?&]sid=\w+)$/i'
+	        array('/([\?&]PHPSESSID=\w+)$/i', //remove session ID
+	              '/(#[^\/]*)$/',			  //and anchors/fragments
+	              '/&amp;/',				  //convert improper HTML entities
+	              '/^(javascript:.*)/i',	  //treat links that contain JS as links with an empty URL 	
+	              '/([\?&]sid=\w+)$/i'		  //remove another flavour of session ID
 	              ),
 	        array('','','&','',''),
 	        $url);
-	    $url=trim($url);
+	    $url = trim($url);
 	
-	    if($url=='') return false;
-		
+	    if ( $url=='' ) return false;
+	    
 	    // turn relative URLs into absolute URLs
-	    $url = blcUtility::relative2absolute( get_option('siteurl'), $url);
+	    if ( empty($base_url) ) $base_url = get_option('siteurl');
+	    $url = blcUtility::relative2absolute( $base_url, $url);
 	    return $url;
 	}
 	
@@ -84,7 +102,7 @@ class blcUtility {
 	        //WTF? $relative is a seriously malformed URL
 	        return false;
 	    }
-	    if(isset($p["scheme"])) return $relative;
+	    if( isset($p["scheme"]) ) return $relative;
 	
 	    $parts=(parse_url($absolute));
 	
@@ -132,7 +150,62 @@ class blcUtility {
 	
 	    return $url;
 	}
-
+	
+	
+  /**
+   * blcUtility::urlencodefix()
+   * Takes an URL and replaces spaces and some other non-alphanumeric characters with their urlencoded equivalents.
+   *
+   * @param string $str
+   * @return string
+   */
+	function urlencodefix($url){
+		return preg_replace_callback(
+			'|[^a-z0-9\+\-\/\\#:.=?&%@]|i', 
+			create_function('$str','return rawurlencode($str[0]);'), 
+			$url
+		 );
+	}
+	
+  /**
+   * blcUtility::is_safe_mode()
+   * Checks if PHP is running in safe mode
+   *
+   * @return bool
+   */
+	function is_safe_mode(){
+		$safe_mode = ini_get('safe_mode');
+		//Null, 0, '', '0' and so on count as false 
+		if ( !$safe_mode ) return false;
+		//Test for some textual true/false variations
+		switch ( strtolower($safe_mode) ){
+			case 'on':
+			case 'true':
+			case 'yes':
+				return true;
+				
+			case 'off':
+			case 'false':
+			case 'no':
+				return false;
+				
+			default: //Let PHP handle anything else
+				return (bool)(int)$safe_mode;
+		}
+	}
+	
+  /**
+   * blcUtility::is_open_basedir()
+   * Checks if open_basedir is enabled
+   *
+   * @return bool
+   */
+	function is_open_basedir(){
+		$open_basedir = ini_get('open_basedir');
+		return $open_basedir && ( strtolower($open_basedir) != 'none' );
+	}
+	
+	
 }//class
 
 }//class_exists

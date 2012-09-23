@@ -24,9 +24,9 @@
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  *
  * -----------------------------------------------------------------------------
- * $Id: navtinc.php 120590 2009-05-26 15:19:06Z gbellucci $:
- * $Date: 2009-05-26 15:19:06 +0000 (Tue, 26 May 2009) $:
- * $Revision: 120590 $:
+ * $Id: navtinc.php 138443 2009-07-23 17:16:00Z gbellucci $:
+ * $Date: 2009-07-23 17:16:00 +0000 (Thu, 23 Jul 2009) $:
+ * $Revision: 138443 $:
  * -----------------------------------------------------------------------------
  */
 if( !defined('navt_include') ) {
@@ -62,7 +62,7 @@ if( !defined('navt_include') ) {
  */
     define('NAVT_MAJVER', 1);
     define('NAVT_MINVER', 0);
-    define('NAVT_BUILD',  32);
+    define('NAVT_BUILD',  34);
 
     define('NAVT_SCRIPTVERS',   NAVT_MAJVER.'.'.NAVT_MINVER.'.'.NAVT_BUILD);  // version applies to all files
     define('NAVT_SCRIPTNAME',  'NAVT');    // name of this script

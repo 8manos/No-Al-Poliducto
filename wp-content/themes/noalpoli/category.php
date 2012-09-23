@@ -2,7 +2,7 @@
 <? get_sidebar(); ?>
 <div id="contenidos">
 
-<? if(is_category('audio')||is_category('documentos')||is_category('video')) { ?>
+<? if(is_category('audio')||is_category('documentos')||is_category('video')||is_category('noticias')) { ?>
 	<div id="descCat">
 		<a id="subsFeed" class="floatRight" href="/feed/" title="Suscribete a este canal RSS y enterate a medida que agreguemos nuevos documentos"><img class="alignright" src="<? bloginfo('stylesheet_directory'); ?>/img/rss.png" alt="RSS"/></a>
 		<h2><? single_cat_title(); ?></h2>
@@ -15,7 +15,7 @@
 <?php while(have_posts()) : the_post(); ?>
 <div class="itemBiblio">
 	<h4><a href="<? the_permalink(); ?>" title="<? the_title(); ?>"><? the_title(); ?></a></h4>
-<?	if(in_category('video')){ extractYouTube(); }elseif(in_category(5)){ extractImage(); }elseif(in_category('audio')){
+<?	if(in_category('video')){ extractYouTube(); }elseif(in_category(5)||in_category(6)){ extractImage(); }elseif(in_category('audio')){
  
 		$idu = $post->ID;
 		echo "<div id='mp3-".$idu."'></div>"; ?>

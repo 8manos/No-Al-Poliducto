@@ -9,6 +9,17 @@ function extractMp3() {
 	echo $mp3link;
 }
 
+function canonical_for_comments() {
+ global $cpage, $post;
+ if ( $cpage > 1 ) :
+  echo "\n";
+  echo "<link rel='canonical' href='";
+  echo get_permalink( $post->ID );
+  echo "' />\n";
+ endif;
+}
+add_action( 'wp_head', 'canonical_for_comments' );
+
 function extractYouTube() {
 	$content = get_the_content();
 	$pattern = "/youtube\.com\/v\/([\w\-]+)/";

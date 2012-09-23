@@ -194,6 +194,7 @@ function comment_author_IP() {
 function get_comment_author_url() {
 	global $comment;
 	$url = ('http://' == $comment->comment_author_url) ? '' : $comment->comment_author_url;
+	$url = esc_url( $url, array('http', 'https') );
 	return apply_filters('get_comment_author_url', $url);
 }
 
@@ -336,6 +337,8 @@ function get_comment_class( $class = '', $comment_id = null, $post_id = null ) {
 			$class = preg_split('#\s+#', $class);
 		$classes = array_merge($classes, $class);
 	}
+
+	$classes = array_map('esc_attr', $classes);
 
 	return apply_filters('comment_class', $classes, $class, $comment_id, $post_id);
 }
@@ -817,8 +820,28 @@ function comments_template( $file = '/comments.php', $separate_comments = false 
 		$file = '/comments.php';
 
 	$req = get_option('require_name_email');
+
+	/**
+	 * Comment author information fetched from the comment cookies.
+	 *
+	 * @uses wp_get_current_commenter()
+	 */
 	$commenter = wp_get_current_commenter();
-	extract($commenter, EXTR_SKIP);
+
+	/**
+	 * The name of the current comment author escaped for use in attributes.
+	 */
+	$comment_author = $commenter['comment_author']; // Escaped by sanitize_comment_cookies()
+
+	/**
+	 * The email address of the current comment author escaped for use in attributes.
+	 */	
+	$comment_author_email = $commenter['comment_author_email'];  // Escaped by sanitize_comment_cookies()
+
+	/**
+	 * The url of the current comment author escaped for use in attributes.
+	 */	
+	$comment_author_url = esc_url($commenter['comment_author_url']);
 
 	/** @todo Use API instead of SELECTs. */
 	if ( $user_ID) {
@@ -919,7 +942,7 @@ function comments_popup_link( $zero = false, $one = false, $more = false, $css_c
 	$number = get_comments_number( $id );
 
 	if ( 0 == $number && !comments_open() && !pings_open() ) {
-		echo '<span' . ((!empty($css_class)) ? ' class="' . $css_class . '"' : '') . '>' . $none . '</span>';
+		echo '<span' . ((!empty($css_class)) ? ' class="' . esc_attr( $css_class ) . '"' : '') . '>' . $none . '</span>';
 		return;
 	}
 
@@ -951,7 +974,7 @@ function comments_popup_link( $zero = false, $one = false, $more = false, $css_c
 
 	echo apply_filters( 'comments_popup_link_attributes', '' );
 
-	echo ' title="' . sprintf( __('Comment on %s'), $title ) . '">';
+	echo ' title="' . esc_attr( sprintf( __('Comment on %s'), $title ) ) . '">';
 	comments_number( $zero, $one, $more, $number );
 	echo '</a>';
 }

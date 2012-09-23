@@ -47,6 +47,7 @@
 	<div class="navigation">
 		<div class="alignleft"><?php previous_comments_link() ?></div>
 		<div class="alignright"><?php next_comments_link() ?></div>
+	<p style="clear:both;"><br><em>(Se muestran 200 comentarios por hoja)</em></p>
 	</div>
  <?php else : // this is displayed if there are no comments so far ?>
 

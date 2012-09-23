@@ -1,10 +1,10 @@
 === Wordpress Navigation List Plugin NAVT ===
 Contributors: gbellucci, et_ux
-Donate link: http://atalatastudio.com
+Donate link: http://atalayastudio.com
 Tags: navigation, menu, breadcrumb, lists, pages, categories, links, navbar, widget, dropdown, avatars, gravatars, graphic links
 Requires at least: 2.5
-Tested up to: 2.7.1
-Stable tag: 1.0.32
+Tested up to: 2.8.2
+Stable tag: 1.0.34
 
 Create, organize and manage your WordPress menus and navigation lists by logically grouping your pages, categories, users via a drag'n drop interface.
 
@@ -47,6 +47,7 @@ The __WordPress Navigation Tool (NAVT)__ plugin is a powerful tool designed to p
 * Slovak   (sk_SK) by [Tomas Forro](http://pol.proz.com/profile/810781 "Tomas Forro")
 * Japanese (ja_JA) by [Yoichi Kinoshita](http://www.ad-minister.net/ "Yoichi Kinoshita")
 * Swedish  (sv_SE) by [Mikael Jorhult](http://www.mishkin.se/blog/ "Mikael Jorhult")
+* Belarusian (by_BY) by [Marcis Gasuns](http://www.comfi.com "Marcis Gasuns")
 
   __If you'd like to contribute by offering your translating skills please contact me at greg @ gbellucci . us__
 
@@ -73,6 +74,17 @@ The `doc` directory contains a single page manual explaining the PHP interface f
 
 
 = Release Notes =
+*__1.0.34 Release Candidate__ _(July 23, 2009)_
+
+1. Added Belarusian translation provided by Marcis Gasuns.
+1. Tested against wp 2.8.2
+
+
+*__1.0.33 Release Candidate__ _(July 12, 2009)_
+
+1. Adjustments made for user roles.
+1. Tested against wp 2.8.1
+
 
 *__1.0.32 Release Candidate__ _(May 26, 2009)_
 

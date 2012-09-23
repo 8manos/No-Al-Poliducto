@@ -49,7 +49,7 @@
 
 <?php endwhile; ?>
 <?php endif; ?>
-<? if(is_front_page()){comments_template('/colector_firmas.php');} elseif(is_page()||is_single()) { comments_template(); }; ?>
+<? comments_template(); ?>
 <div class="navPosts">
 	<span class="left"><?php previous_post_link('&laquo; %link', 'anterior:<br> %title', TRUE); ?></span>
 	<span class="right"><?php next_post_link('%link &raquo;', 'siguiente:<br> %title', TRUE); ?></span>
