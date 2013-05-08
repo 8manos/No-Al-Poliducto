@@ -23,7 +23,7 @@
 * Plugin Name: AddThis Social Bookmarking Widget
 * Plugin URI: http://www.addthis.com
 * Description: Help your visitor promote your site! The AddThis Social Bookmarking Widget allows any visitor to bookmark your site easily with many popular services. Sign up for an AddThis.com account to see how your visitors are sharing your content--which services they're using for sharing, which content is shared the most, and more. It's all free--even the pretty charts and graphs.
-* Version: 3.0
+* Version: 3.1
 *
 * Author: The AddThis Team
 * Author URI: http://www.addthis.com/blog
@@ -46,8 +46,8 @@ function addthis_early(){
 
 
 define( 'addthis_style_default' , 'fb_tw_p1_sc');
-define( 'ADDTHIS_PLUGIN_VERSION' , '3.0');
-define( 'ADDTHIS_PRODUCT_VERSION' , 'wpp-3.0');
+define( 'ADDTHIS_PLUGIN_VERSION' , '3.1');
+define( 'ADDTHIS_PRODUCT_VERSION' , 'wpp-3.1');
 define( 'ADDTHIS_ATVERSION', '300');
 define( 'ADDTHIS_ATVERSION_MANUAL_UPDATE', -1);
 define( 'ADDTHIS_ATVERSION_AUTO_UPDATE', 0);
@@ -76,15 +76,15 @@ $addthis_styles = array(
                       'plus' => array('img'=>'sm-plus.gif', 'w'=>16, 'h'=>16)
                     );
 $addthis_options = get_option('addthis_settings');
-$atversion = array_key_exists('atversion_reverted', $addthis_options) && $addthis_options['atversion_reverted'] == 1 ? $addthis_options['atversion'] : ADDTHIS_ATVERSION;
+$atversion = is_array($addthis_options) && array_key_exists('atversion_reverted', $addthis_options) && $addthis_options['atversion_reverted'] == 1 ? $addthis_options['atversion'] : ADDTHIS_ATVERSION;
 
 $addthis_new_styles = array(
 
-    'fb_tw_p1_sc' => array( 'src' => '<div class="addthis_toolbox addthis_default_style " %s  ><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a><a class="addthis_button_tweet"></a><a class="addthis_button_google_plusone" g:plusone:size="medium"></a><a class="addthis_counter addthis_pill_style"></a></div>' , 'img' => 'horizontal_share_rect.png' , 'name' => 'Like, Tweet, +1, Share', 'above' => '', 'below' => ''
+    'fb_tw_p1_sc' => array( 'src' => '<div class="addthis_toolbox addthis_default_style " %s  ><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a><a class="addthis_button_tweet"></a><a class="addthis_button_pinterest_pinit"></a><a class="addthis_counter addthis_pill_style"></a></div>' , 'img' => 'horizontal_share_rect.png' , 'name' => 'Like, Tweet, +1, Share', 'above' => '', 'below' => ''
     ), // facebook tweet plus 1 share counter
-    'large_toolbox' => array( 'src' =>  '<div class="addthis_toolbox addthis_default_style addthis_32x32_style" %s ><a class="addthis_button_preferred_1"></a><a class="addthis_button_preferred_2"></a><a class="addthis_button_preferred_3"></a><a class="addthis_button_preferred_4"></a><a class="addthis_button_compact"></a></div>', 'img' => 'toolbox-large.png', 'name' => 'Large Toolbox', 'above' => 'hidden ', 'below' => 'hidden'
+    'large_toolbox' => array( 'src' =>  '<div class="addthis_toolbox addthis_default_style addthis_32x32_style" %s ><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_email"></a><a class="addthis_button_pinterest_share"></a><a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a></div>', 'img' => 'toolbox-large.png', 'name' => 'Large Toolbox', 'above' => 'hidden ', 'below' => 'hidden'
     ), // 32x32
-    'small_toolbox' => array( 'src' =>  '<div class="addthis_toolbox addthis_default_style addthis_" %s ><a class="addthis_button_preferred_1"></a><a class="addthis_button_preferred_2"></a><a class="addthis_button_preferred_3"></a><a class="addthis_button_preferred_4"></a><a class="addthis_button_compact"></a></div>', 'img' => 'toolbox-small.png', 'name' => 'Small Toolbox', 'above' => 'hidden ', 'below' => '' 
+    'small_toolbox' => array( 'src' =>  '<div class="addthis_toolbox addthis_default_style addthis_" %s ><a class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><a class="addthis_button_email"></a><a class="addthis_button_pinterest_share"></a><a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a></div>', 'img' => 'toolbox-small.png', 'name' => 'Small Toolbox', 'above' => 'hidden ', 'below' => '' 
     ), // 32x32
     'plus_one_share_counter' => array( 'src' => '<div class="addthis_toolbox addthis_default_style" %s ><a class="addthis_button_google_plusone" g:plusone:size="medium" ></a><a class="addthis_counter addthis_pill_style"></a></div>', 'img' => 'plusone-share.gif', 'name' => 'Plus One and Share Counter', 'above'=> 'hidden', 'below'=>'hidden' , 'defaultHide' => true 
     ), // +1
@@ -144,7 +144,7 @@ function addthis_script_to_content($content)
 add_filter('language_attributes', 'addthis_language_attributes');
 function addthis_language_attributes($input)
 {
-    return $input . ' xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:addthis="http://www.addthis.com/help/api-spec" ';
+    return $input . ' xmlns:fb="http://ogp.me/ns/fb#" xmlns:addthis="http://www.addthis.com/help/api-spec" ';
 }
 
 
@@ -282,7 +282,7 @@ function addthis_check_footer() {
 */
 function cuid()
 {
-    $base = home_url();
+    $base = get_option('home');
     $cuid = hash_hmac('md5', $base, 'addthis'); 
     return $cuid;
 } 
@@ -393,6 +393,18 @@ function addthis_custom_toolbox($options, $url, $title)
     if (isset($options['more']) && $options['more'] == true)
     {
             $button .= '<a class="addthis_button_compact"></a>';
+    }
+
+    if (isset($options['counter']) && ($options['counter'] != "") && ($options['counter'] !== false))
+    {
+        if ($options['counter'] === true)
+        {  //no style was specified
+           $button .= '<a class="addthis_counter"></a>';
+        }
+        else
+        {  //a specific style was specified such as pill_style or bubble_style
+            $button .= '<a class="addthis_counter addthis_'.$options['counter'].'"></a>';
+        }
     }
     
     $button .= '</div>';
@@ -585,7 +597,7 @@ function addthis_render_dashboard_widget() {
             'domain='.$domain.'&period='.$period.
             '&username='.$username.
             '&password='.$password.
-            $profile;
+            $profile.'&origin=wordpress_plugin';
             $stats[$metric.$dimension.$period] = wp_remote_get($url, array('period' => $period, 'domain' => $domain, 'password' => $password, 'username' => $username) );
       
             if ( is_wp_error( $stats[$metric.$dimension.$period] ) )
@@ -735,7 +747,7 @@ function addthis_render_dashboard_widget() {
         {
             $url = array_shift($shareurls);
             $displayUrl = str_replace( array('http://', 'https://', $domain), '',$url->url);
-            echo "<li><span class='urlCount'>" .  $url->shares . "</span><span class='urlUrl'>". $displayUrl . "</span></li>";
+            echo "<li><span class='urlCount'>" .  $url->shares . "</span><span class='urlUrl'>". urldecode($displayUrl) . "</span></li>";
         }
         echo "</ul>";
         echo "<h5>Top Services for shares(last month)</h5>";
@@ -749,7 +761,7 @@ function addthis_render_dashboard_widget() {
         {
             $url = array_shift($clickbackurls);
             $displayUrl = str_replace( array('http://', 'https://', $domain), '',$url->url);
-            echo "<li><span class='urlCount'>" .  $url->clickbacks . "</span><span class='urlUrl'>". $displayUrl . "</span></li>";
+            echo "<li><span class='urlCount'>" .  $url->clickbacks . "</span><span class='urlUrl'>". urldecode($displayUrl) . "</span></li>";
         }
         echo "</ul>";
         echo "<h5>Top Services for clicks(last month)</h5>";
@@ -897,7 +909,13 @@ elseif ($data['above'] == 'custom_string')
 {
 
     $options['above'] = 'custom_string';
-    $options['above_custom_string'] = addthis_kses($data['above_custom_string']);
+    if (strpos($data['above_custom_string'], "style=") != false) {
+    	$custom_style = explode('style=', $data['above_custom_string']);
+    	$custom_style = explode('>', $custom_style[1]);
+    	$custom_style = explode(' ', $custom_style[0]);
+    	$above_custom_styles = " style=$custom_style[0]";
+    }
+    $options['above_custom_string'] = addthis_kses($data['above_custom_string'], $above_custom_styles);
 
 }
 
@@ -926,7 +944,13 @@ elseif ($data['below'] == 'custom')
 elseif ($data['below'] == 'custom_string')
 {
     $options['below'] = 'custom_string';
-    $options['below_custom_string'] = addthis_kses($data['below_custom_string']);
+    if (strpos($data['below_custom_string'], "style=") != false) {
+    	$custom_style = explode('style=', $data['below_custom_string']);
+    	$custom_style = explode('>', $custom_style[1]);
+    	$custom_style = explode(' ', $custom_style[0]);
+    	$below_custom_styles = " style=$custom_style[0]";
+    }
+    $options['below_custom_string'] = addthis_kses($data['below_custom_string'], $below_custom_styles);
 }
 
 
@@ -1301,8 +1325,34 @@ function addthis_display_social_widget($content, $filtered = true, $below_excerp
         $options = get_option('addthis_settings');
 
 
-    if ( is_home() || is_front_page() ) 
-        $display = (isset($options['addthis_showonhome']) &&  $options['addthis_showonhome'] == true ) ? true : false;
+	if ( is_home() || is_front_page() ) {
+    	if (isset($options['addthis_showonhome']) &&  $options['addthis_showonhome'] == true ) {
+	    	if (isset($options['addthis_showonexcerpts']) &&  $options['addthis_showonexcerpts'] == true ) {
+		    		$display = true;
+		    }
+		    else {
+				if( strpos($post->post_content, '<!--more-->') != false) {
+		    		$display = false;
+	    		}
+	    		else {
+	    			$display = true;
+	    		}
+	    	}
+    	}
+    	else {
+	    	if (isset($options['addthis_showonexcerpts']) &&  $options['addthis_showonexcerpts'] == true ) {
+	    		if( strpos($post->post_content, '<!--more-->') != false) {
+			  		$display = true;
+	    		}
+	    		else {
+	    			$display = false;
+	    		}
+		    }
+		    else {
+		    	$display = false;
+	    	}
+    	}
+    }
     elseif ( is_archive() && ! is_category() )
         $display = (isset($options['addthis_showonarchives']) && $options['addthis_showonarchives'] == true ) ? true : false;
     // Cat
@@ -1439,6 +1489,7 @@ function addthis_output_script($return = false, $justConfig = false )
 {
 
     global $addthis_settings;
+    wp_enqueue_style( 'output', plugins_url('css/output.css', __FILE__) );	
 
     if ( isset($_GET['preview']) &&  $_GET['preview'] == 1 && $options = get_transient('addthis_settings') )
         $preview = true;
@@ -1522,14 +1573,15 @@ function addthis_output_script($return = false, $justConfig = false )
     if ($justConfig)
     {
         $return = '';
-        if ( isset( $options['addthis_share_json'] ) && $options['addthis_share_json'] != '')
-            $return .= 'if (typeof(addthis_share) == "undefined"){ addthis_share = ' . $options['addthis_share_json'] . ';}';
+    	$share = apply_filters('addthis_share_js_var', $addthis_share );
+        if ( isset( $options['addthis_share_json'] ) && $options['addthis_share_json'] != '') {
+        	$addthis_json_share = array_key_exists('addthis_share_json', $options) ? $options['addthis_share_json'] : '';
+        	$return .= merge_share_with_json_share($addthis_share, $addthis_json_share);
+        }
         else
         {
-            $share = apply_filters('addthis_share_js_var', $addthis_share );
             if (! empty($share) )
                 $return .= 'if (typeof(addthis_share) == "undefined"){ addthis_share = ' . json_encode( apply_filters('addthis_share_js_var', $addthis_share ) ) .';}';
-
         }
         $return .= "\n";
 
@@ -1548,7 +1600,7 @@ function addthis_output_script($return = false, $justConfig = false )
 
 
     if ( isset( $options['addthis_share_json'] ) && $options['addthis_share_json'] != '')
-        $script .= 'if (typeof(addthis_share) == "undefined"){ addthis_share = ' . $options['addthis_share_json'] . ';}';
+        $script .= merge_share_with_json_share($addthis_share, $addthis_json_share);
     else
         $script .= 'if (typeof(addthis_share) == "undefined"){ addthis_share = ' . json_encode( apply_filters('addthis_share_js_var', $addthis_share ) ) .';}';
     $script .= '</script>';
@@ -1573,9 +1625,9 @@ function validate_addthis_api_credentials()
                            'credentialerror' => 'true', 'credentialmessage' => '');
     if ($_POST['addthis_username'] && $_POST['addthis_password'] && $_POST['addthis_profile']) {
         $url = 'https://api.addthis.com/analytics/1.0/pub/shares.json?'.
-            'username=' . $_POST['addthis_username'].
-            '&password=' . $_POST['addthis_password'].
-            '&pubid=' . $_POST['addthis_profile'];
+            'username=' . urlencode($_POST['addthis_username']).
+            '&password=' . urlencode($_POST['addthis_password']).
+            '&pubid=' . urlencode($_POST['addthis_profile']);
         $response = wp_remote_get($url);
         $credential_error = '&#x2716; The username, password, and profile combination you entered is invalid.';
         $profile_error = '&#x2716; Invalid AddThis profile ID';
@@ -1623,7 +1675,27 @@ function merge_config_with_json_config($append_string, $addthis_config, $addthis
         $append_string .= 'var addthis_config = '. json_encode($addthis_config) .';';
     return $append_string;
 }
-
+/*
+ * Merge the Add this settings with that given using JSON format
+* @param String $appendString - The string to build and return the script
+* @param array $addthis_share - The setting array for add this share
+* @param String $addthis_json_share - The JSON String
+* @return String $appendString - The string to build and return the script
+*/
+function merge_share_with_json_share($addthis_share, $addthis_json_share) {
+	$append_string = '';
+	if ( isset( $addthis_json_share ) &&   trim($addthis_json_share) != '') {
+		$addthis_share_json_list = json_decode($addthis_json_share, true);
+		if (! empty ($addthis_share_json_list) && ! empty ($addthis_share)) {
+			foreach($addthis_share_json_list as $key_json => $json_share_value) {
+				$addthis_share[$key_json] = $json_share_value;
+			}
+		}
+	}
+	if (! empty ($addthis_share) )
+		$append_string = 'if (typeof(addthis_share) == "undefined"){ addthis_share = '. json_encode($addthis_share) .';}';
+	return $append_string;
+}
 /**
 * Appends AddThis button to post content.
 */
@@ -1986,7 +2058,7 @@ function addthis_plugin_options_php4() {
                     <th><h2>Display Options</h2></th>
                 </tr>
 				<tr valign="top">
-					<td colspan="2">For more details on the following options, see <a href="//addthis.com/customization">our customization documentation</a>.</td>
+					<td colspan="2">For more details on the following options, see <a href="//support.addthis.com/customer/portal/articles/381263-addthis-client-api">our customization documentation</a>.</td>
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e("Custom service list:", 'addthis_trans_domain' ); ?><br /><span class='description'><?php _e(
@@ -2059,11 +2131,13 @@ function addthis_plugin_options_php4() {
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e("addthis_config values:<br/><span class=\"description\">(json format)</span>", 'addthis_trans_domain' ); ?></th>
-					<td><textarea rows='3' cols='40' type="text" name="addthis_settings[addthis_config_json]"  /><?php echo $addthis_config_json; ?></textarea></td>
+					<td><textarea rows='3' cols='40' type="text" name="addthis_settings[addthis_config_json]" id="addthis-config-json"/><?php echo $addthis_config_json; ?></textarea></td>
+					<td id="config-error" style="display: none;color: red;float: left;margin-top: 25px;width: 150px;">Invalid JSON format</td>
 				</tr>
 				<tr valign="top">
 					<th scope="row"><?php _e("addthis_share values:<br/><span class=\"description\">(json format)</span>", 'addthis_trans_domain' ); ?></th>
-					<td><textarea rows='3' cols='40' type="text" name="addthis_settings[addthis_share_json]"  /><?php echo $addthis_share_json; ?></textarea></td>
+					<td><textarea rows='3' cols='40' type="text" name="addthis_settings[addthis_share_json]" id="addthis-share-json" /><?php echo $addthis_share_json; ?></textarea></td>
+					<td id="share-error" style="display: none;color: red;float: left;margin-top: 25px;width: 150px;">Invalid JSON format</td>
                 </tr>               
 			</table>
 			<div class='clear'>&nbsp;</div>
@@ -2083,7 +2157,7 @@ function addthis_plugin_options_php4() {
 
 
     ?>    
-		<input type="submit" name="Submit" value="<?php _e('Save Changes') ?>" />
+		<input type="submit" name="Submit" value="<?php _e('Save Changes') ?>"  id="submit-button"/>
 		<a href="<?php echo $preview_link; ?>" class="thickbox thickbox-preview" id="preview" ><?php _e('Preview'); ?></a>
     </p>
 
